@@ -5,6 +5,11 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
 [![Verification](https://img.shields.io/badge/Verification-2287_Checks_PASS-brightgreen.svg)](scripts/verify_gdt.py)
 [![VolkanBridge](https://img.shields.io/badge/VolkanBridge-Two--Way_Validated-blueviolet.svg)](docs/VOLKAN_BRIDGE_SPEC.md)
+[![Sister Repo: Niemeier A8^3 Moonshine](https://img.shields.io/badge/Sister%20Repo-Niemeier%20A8%5E3%20Moonshine-024dad.svg)](https://github.com/pCwOrM/niemeier-a8-umbral-moonshine)
+[![Sister Repo: WERR Core Monorepo](https://img.shields.io/badge/Sister%20Repo-WERR%20Core%20Monorepo-8b5cf6.svg)](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis)
+[![Sister Repo: Schönhage Record](https://img.shields.io/badge/Sister%20Repo-Sch%C3%B6nhage%20Record-brightgreen.svg)](https://github.com/pCwOrM/integer-mult-bounds)
+[![Sister Repo: WerrSoma Connectome](https://img.shields.io/badge/Sister%20Repo-WerrSoma%20Connectome-00f0ff.svg)](https://github.com/Lexovian/WerrSoma)
+[![Sister Repo: WerreduR](https://img.shields.io/badge/Sister%20Repo-WerreduR%20v4.0-059669.svg)](https://github.com/jesmaat/WerreduR)
 
 ![General Divisor Theorem Lean 4 Infographic](gdt_twitter_infographic.png)
 
@@ -170,4 +175,16 @@ lake build
 
 Dedicated bare-metal computing clusters, proof verification environments, and enterprise development resources were provided by **Bekirhan Dağlı** (Managing Partner) and **ITouch Systems Research & Development**.
 
+---
+
+## 7. Companion Open-Science Formal Architecture
+
+This work is part of the unified open-science formal mathematics and theoretical computer science initiative developed by ITouch Systems Research Labs:
+* **24D Niemeier Lattice $A_8^3$, K3 Hodge Duality & Umbral Moonshine in Lean 4:** [Zenodo: 10.5281/zenodo.23324066](https://doi.org/10.5281/zenodo.23324066) (Record: [`23324067`](https://zenodo.org/records/23324067)) • [GitHub: `pCwOrM/niemeier-a8-umbral-moonshine`](https://github.com/pCwOrM/niemeier-a8-umbral-moonshine)
+* **Schönhage Tensor Carrier Compression (World Record):** [Zenodo: 10.5281/zenodo.23268580](https://doi.org/10.5281/zenodo.23268580) • [GitHub: `pCwOrM/integer-mult-bounds`](https://github.com/pCwOrM/integer-mult-bounds)
+* **WERR Core Monorepo:** [Zenodo: 10.5281/zenodo.22774934](https://doi.org/10.5281/zenodo.22774934) • [GitHub: `pCwOrM/mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis)
+* **WerrSoma Whole-Brain Drosophila Connectome (158K Neurons):** [Zenodo: 10.5281/zenodo.23072929](https://doi.org/10.5281/zenodo.23072929) • [GitHub: `Lexovian/WerrSoma`](https://github.com/Lexovian/WerrSoma)
+* **WerreduR Procedural Fractal Pedagogy (v4.0):** [Zenodo: 10.5281/zenodo.23128224](https://doi.org/10.5281/zenodo.23128224) • [GitHub: `jesmaat/WerreduR`](https://github.com/jesmaat/WerreduR)
+
 Formalized under Apache-2.0.
+
