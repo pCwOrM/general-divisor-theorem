@@ -18,7 +18,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Nat.Factors
 import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Rat.Basic
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic.NormNum
 import GeneralDivisorTheorem
@@ -166,7 +166,14 @@ theorem benchmark_N18_m2_agreement :
     T_min 18 2 = 6 ∧
     DanRepresentation.Tmin P = 6 ∧
     C_factor (d_param 18 2) = 2 := by
-  decide
+  constructor
+  · native_decide
+  constructor
+  · native_decide
+  · have hd : d_param 18 2 = 2 := by native_decide
+    rw [hd]
+    have ht : Nat.totient 2 = 1 := by decide
+    simp [C_factor, ht]
 
 /-- Benchmark 2 (§3.3 ii): N = 5, m = 6, a = 2.
     Admissible with d = 1, despite gcd(a, m) = 2. -/
@@ -177,7 +184,10 @@ theorem benchmark_N5_m6_agreement :
     T_min 5 6 = 30 ∧
     DanRepresentation.Tmin P = 30 ∧
     C_factor (d_param 5 6) = 1 := by
-  decide
+  have hd : d_param 5 6 = 1 := by native_decide
+  have ht : Nat.totient 1 = 1 := by decide
+  simp [hd, C_factor, ht]
+  native_decide
 
 /-- Canonical Euler Density Correction Instances:
     C(6) = 3, C(10) = 2.5, C(30) = 3.75 -/
@@ -185,7 +195,6 @@ theorem benchmark_canonical_C_factors :
     C_factor 6 = 3 ∧
     C_factor 10 = 5 / 2 ∧
     C_factor 30 = 15 / 4 := by
-  unfold C_factor
-  norm_num
+  exact ⟨instance_m6_C, instance_m10_C, instance_m30_C⟩
 
 end VolkanBridge
