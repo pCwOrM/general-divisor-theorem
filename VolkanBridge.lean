@@ -199,8 +199,22 @@ theorem bridge_inadmissible_empty (P : DanParams)
 
 /-- Discharging Theorem 3 Periodicity via Dan's Translation Theorem -/
 theorem bridge_periodic (P : DanParams) (n : Nat) :
-    DanRepresentation.Good P (n + DanRepresentation.Tmin P) ↔ DanRepresentation.Good P n := by
-  sorry
+    DanRepresentation.Good P (n + DanRepresentation.Tmin P) ↔
+      DanRepresentation.Good P n := by
+  by_cases h : DanRepresentation.Admissible P.a (DanRepresentation.d P)
+  · have hadm : Nat.gcd (Int.natAbs (P.a : Int)) (d_param P.N P.m) = 1 := by
+      simpa [DanRepresentation.Admissible, Nat.Coprime,
+        d_param_agrees P] using h
+    have hperiod := T_min_is_period P.N P.m (P.a : Int) n hadm
+    rw [← T_min_agrees P]
+    exact (S_indicator_agrees P (n + T_min P.N P.m)).symm.trans
+      (hperiod.trans (S_indicator_agrees P n))
+  · have hempty := bridge_inadmissible_empty P h
+    constructor
+    · intro hgood
+      exact False.elim (hempty (n + DanRepresentation.Tmin P) hgood)
+    · intro hgood
+      exact False.elim (hempty n hgood)
 
 /-!
 # Section 4: Machine-Verified Distinguishing Benchmarks (0 sorry)
