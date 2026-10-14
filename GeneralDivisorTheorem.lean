@@ -65,8 +65,41 @@ def S_indicator (N m : Nat) (a : Int) (n : Nat) : Prop :=
 -/
 
 /-- Theorem 3 (Inadmissible Branch): If gcd(a, d) > 1, no residue n is coprime to N. -/
-axiom inadmissible_empty_criterion (N m : Nat) (a : Int) (h_inadm : Nat.gcd (a.natAbs) (d_param N m) > 1) :
-    ∀ n : Nat, ((n : Int) ≡ a [ZMOD (m : Int)]) → ¬ Nat.Coprime n N
+theorem inadmissible_empty_criterion (N m : Nat) (a : Int)
+    (h_inadm : Nat.gcd a.natAbs (d_param N m) > 1) :
+    ∀ n : Nat, ((n : Int) ≡ a [ZMOD (m : Int)]) →
+      ¬ Nat.Coprime n N := by
+  have hdvd_gcd : d_param N m ∣ Nat.gcd m N := by
+    unfold d_param rad
+    split_ifs with h
+    · simp [h]
+    · exact Nat.prod_primeFactors_dvd _
+  have hdm : d_param N m ∣ m :=
+    dvd_trans hdvd_gcd (Nat.gcd_dvd_left m N)
+  have hdN : d_param N m ∣ N :=
+    dvd_trans hdvd_gcd (Nat.gcd_dvd_right m N)
+  let g := Nat.gcd a.natAbs (d_param N m)
+  have hg_a : (g : Int) ∣ a := by
+    exact Int.natCast_dvd.mpr (Nat.gcd_dvd_left _ _)
+  have hg_m : g ∣ m :=
+    dvd_trans (Nat.gcd_dvd_right _ _) hdm
+  have hg_N : g ∣ N :=
+    dvd_trans (Nat.gcd_dvd_right _ _) hdN
+  intro n hcong hcop
+  have hm_sub : (m : Int) ∣ a - (n : Int) :=
+    Int.ModEq.dvd hcong
+  have hg_sub : (g : Int) ∣ a - (n : Int) :=
+    dvd_trans (Int.natCast_dvd_natCast.mpr hg_m) hm_sub
+  have hg_n_int : (g : Int) ∣ (n : Int) := by
+    have h := dvd_sub hg_a hg_sub
+    simpa using h
+  have hg_n : g ∣ n :=
+    Int.natCast_dvd_natCast.mp hg_n_int
+  have hg_one : g ∣ 1 :=
+    (Nat.Coprime.gcd_eq_one hcop) ▸
+      Nat.dvd_gcd hg_n hg_N
+  have hg_eq_one : g = 1 := Nat.dvd_one.mp hg_one
+  omega
 
 /-- Factoring the indicator: for admissible residues, coprimality to N reduces to coprimality to R. -/
 axiom indicator_factorization (N m : Nat) (a : Int) (n : Nat)
