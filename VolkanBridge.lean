@@ -95,8 +95,14 @@ Volkan's `d_param N m = rad (gcd m N)` equals Dan's `∏ q ∈ primeFactors N �
 -/
 theorem d_param_agrees (P : DanParams) :
     d_param P.N P.m = DanRepresentation.d P := by
-  -- Mathematical proof: primeFactors (gcd m N) = primeFactors N ∩ primeFactors m
-  sorry
+  have hm : P.m ≠ 0 := Nat.ne_of_gt P.hm
+  have hN : P.N ≠ 0 := Nat.ne_of_gt P.hN
+  have hgcd : Nat.gcd P.m P.N ≠ 0 := by
+    exact Nat.ne_of_gt (Nat.gcd_pos_of_pos_left P.N P.hm)
+  simp only [d_param, rad, if_neg hgcd, DanRepresentation.d]
+  rw [Nat.primeFactors_gcd hm hN]
+  rw [Finset.inter_comm]
+  rfl
 
 /--
 Theorem (R-Agreement):
