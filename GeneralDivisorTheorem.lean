@@ -42,10 +42,107 @@ def rad (n : Nat) : Nat :=
 def d_param (N m : Nat) : Nat :=
   rad (Nat.gcd m N)
 
+private theorem d_param_dvd_rad (N m : Nat) :
+    d_param N m ∣ rad N := by
+  unfold d_param rad
+  by_cases hN : N = 0
+  · subst N
+    simp
+  · have hg : Nat.gcd m N ≠ 0 := by
+      intro h
+      exact hN (Nat.gcd_eq_zero_iff.mp h).2
+    simp only [if_neg hN, if_neg hg]
+    apply Finset.prod_dvd_prod_of_subset
+    exact Nat.primeFactors_mono (Nat.gcd_dvd_right m N) hN
+
 /-- The unshared radical of N: R = rad(N) / d. -/
 def R_param (N m : Nat) : Nat :=
   if d_param N m = 0 then 0
   else (rad N) / (d_param N m)
+
+private theorem rad_eq_d_mul_R (N m : Nat) :
+    rad N = d_param N m * R_param N m := by
+  by_cases hN : N = 0
+  · subst N
+    simp [rad, d_param, R_param]
+  · have hg : Nat.gcd m N ≠ 0 := by
+      intro h
+      exact hN (Nat.gcd_eq_zero_iff.mp h).2
+    have hd : d_param N m ≠ 0 := by
+      unfold d_param rad
+      simp only [if_neg hg]
+      exact Finset.prod_ne_zero_iff.mpr (by
+        intro p hp
+        exact (Nat.pos_of_mem_primeFactors hp).ne')
+    unfold R_param
+    simp only [if_neg hd]
+    exact (Nat.mul_div_cancel' (d_param_dvd_rad N m)).symm
+
+
+private theorem admissible_coprime_d
+    (N m : Nat) (a : Int) (n : Nat)
+    (h_adm : Nat.gcd a.natAbs (d_param N m) = 1)
+    (h_cong : (n : Int) ≡ a [ZMOD (m : Int)]) :
+    Nat.Coprime n (d_param N m) := by
+  have hdg : d_param N m ∣ Nat.gcd m N := by
+    unfold d_param rad
+    split_ifs with h
+    · simp [h]
+    · exact Nat.prod_primeFactors_dvd _
+  have hdm : d_param N m ∣ m :=
+    dvd_trans hdg (Nat.gcd_dvd_left m N)
+  by_contra hn
+  obtain ⟨p, hp, hpn, hpd⟩ :=
+    Nat.Prime.not_coprime_iff_dvd.mp hn
+  have hpm : p ∣ m := dvd_trans hpd hdm
+  have hpi : (p : Int) ∣ a - (n : Int) := by
+    exact dvd_trans (Int.natCast_dvd_natCast.mpr hpm)
+      (Int.ModEq.dvd h_cong)
+  have hpa : (p : Int) ∣ a := by
+    have hpnI : (p : Int) ∣ (n : Int) :=
+      Int.natCast_dvd_natCast.mpr hpn
+    have := dvd_add hpi hpnI
+    simpa only [sub_add_cancel] using this
+  have hpaNat : p ∣ a.natAbs :=
+    Int.natCast_dvd.mp hpa
+  have hpone : p ∣ 1 := by
+    rw [← h_adm]
+    exact Nat.dvd_gcd hpaNat hpd
+  exact hp.ne_one (Nat.dvd_one.mp hpone)
+
+private theorem coprime_rad_iff (n N : Nat) :
+    Nat.Coprime n (rad N) ↔ Nat.Coprime n N := by
+  by_cases hN : N = 0
+  · subst N
+    simp [rad]
+  · have hprime (p : Nat) (hp : Nat.Prime p) :
+        p ∣ rad N ↔ p ∣ N := by
+      constructor
+      · intro h
+        exact dvd_trans h (by
+          unfold rad
+          simp only [if_neg hN]
+          exact Nat.prod_primeFactors_dvd N)
+      · intro h
+        have hmem : p ∈ N.primeFactors :=
+          (Nat.mem_primeFactors_of_ne_zero hN).mpr ⟨hp, h⟩
+        unfold rad
+        simp only [if_neg hN]
+        exact Finset.dvd_prod_of_mem id hmem
+    constructor
+    · intro h
+      by_contra hn
+      obtain ⟨p, hp, hpn, hpN⟩ :=
+        Nat.Prime.not_coprime_iff_dvd.mp hn
+      exact (Nat.Prime.not_coprime_iff_dvd.mpr
+        ⟨p, hp, hpn, (hprime p hp).mpr hpN⟩) h
+    · intro h
+      by_contra hn
+      obtain ⟨p, hp, hpn, hpr⟩ :=
+        Nat.Prime.not_coprime_iff_dvd.mp hn
+      exact (Nat.Prime.not_coprime_iff_dvd.mpr
+        ⟨p, hp, hpn, (hprime p hp).mp hpr⟩) h
+
 
 /-- Exact minimal period of the indicator function: T_min = m * R. -/
 def T_min (N m : Nat) : Nat :=
@@ -102,9 +199,20 @@ theorem inadmissible_empty_criterion (N m : Nat) (a : Int)
   omega
 
 /-- Factoring the indicator: for admissible residues, coprimality to N reduces to coprimality to R. -/
-axiom indicator_factorization (N m : Nat) (a : Int) (n : Nat)
-    (h_adm : Nat.gcd (a.natAbs) (d_param N m) = 1) (h_cong : (n : Int) ≡ a [ZMOD (m : Int)]) :
-    Nat.Coprime n N ↔ Nat.Coprime n (R_param N m)
+theorem indicator_factorization (N m : Nat) (a : Int) (n : Nat)
+    (h_adm : Nat.gcd a.natAbs (d_param N m) = 1)
+    (h_cong : (n : Int) ≡ a [ZMOD (m : Int)]) :
+    Nat.Coprime n N ↔ Nat.Coprime n (R_param N m) := by
+  have hnd : Nat.Coprime n (d_param N m) :=
+    admissible_coprime_d N m a n h_adm h_cong
+  rw [← coprime_rad_iff n N, rad_eq_d_mul_R N m,
+      Nat.coprime_mul_iff_right]
+  constructor
+  · intro h
+    exact h.2
+  · intro h
+    exact ⟨hnd, h⟩
+
 
 /-- Theorem 3 (Exact Periodicity): T_min = m * R is a period of the indicator function. -/
 theorem T_min_is_period (N m : Nat) (a : Int) (n : Nat)
