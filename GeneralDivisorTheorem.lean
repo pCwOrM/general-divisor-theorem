@@ -107,9 +107,46 @@ axiom indicator_factorization (N m : Nat) (a : Int) (n : Nat)
     Nat.Coprime n N ↔ Nat.Coprime n (R_param N m)
 
 /-- Theorem 3 (Exact Periodicity): T_min = m * R is a period of the indicator function. -/
-axiom T_min_is_period (N m : Nat) (a : Int) (n : Nat)
-    (h_adm : Nat.gcd (a.natAbs) (d_param N m) = 1) :
-    S_indicator N m a (n + T_min N m) ↔ S_indicator N m a n
+theorem T_min_is_period (N m : Nat) (a : Int) (n : Nat)
+    (h_adm : Nat.gcd a.natAbs (d_param N m) = 1) :
+    S_indicator N m a (n + T_min N m) ↔ S_indicator N m a n := by
+  have hcong :
+      ((n + T_min N m : Nat) : Int) ≡ (n : Int) [ZMOD (m : Int)] := by
+    unfold T_min
+    push_cast
+    simpa [mul_comm] using
+      (Int.modEq_add_fac_self (a := (n : Int))
+        (t := (R_param N m : Int)) (n := (m : Int)))
+  unfold S_indicator
+  constructor
+  · rintro ⟨hc, hp⟩
+    have hn : (n : Int) ≡ a [ZMOD (m : Int)] :=
+      hcong.symm.trans hc
+    have h₁ := indicator_factorization N m a (n + T_min N m)
+      h_adm hc
+    have h₂ := indicator_factorization N m a n h_adm hn
+    have heq :
+        Nat.Coprime (n + T_min N m) (R_param N m) ↔
+          Nat.Coprime n (R_param N m) := by
+      unfold T_min
+      simpa [Nat.mul_comm] using
+        (Nat.coprime_add_mul_right_left n (R_param N m) m)
+    exact ⟨hn, h₂.mpr (heq.mp (h₁.mp hp))⟩
+  · rintro ⟨hc, hp⟩
+    have hn :
+        ((n + T_min N m : Nat) : Int) ≡ a [ZMOD (m : Int)] :=
+      hcong.trans hc
+    have h₁ := indicator_factorization N m a (n + T_min N m)
+      h_adm hn
+    have h₂ := indicator_factorization N m a n h_adm hc
+    have heq :
+        Nat.Coprime (n + T_min N m) (R_param N m) ↔
+          Nat.Coprime n (R_param N m) := by
+      unfold T_min
+      simpa [Nat.mul_comm] using
+        (Nat.coprime_add_mul_right_left n (R_param N m) m)
+    exact ⟨hn, h₁.mpr (heq.mpr (h₂.mp hp))⟩
+
 
 /-- Minimal period identity: T_min = lcm(m, rad(N)). -/
 axiom T_min_eq_lcm (N m : Nat) (hN : N > 0) (hm : m > 0) :
