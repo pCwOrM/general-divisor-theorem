@@ -34,7 +34,7 @@ We define:
 /-- Radical of a positive natural number: product of distinct prime factors. -/
 def rad (n : Nat) : Nat :=
   if n = 0 then 0
-  else (n.primeFactors.foldr (· * ·) 1)
+  else n.primeFactors.prod id
 
 /-- The shared-prime radical between modulus m and constraint N: d = rad(gcd(m, N)). -/
 def d_param (N m : Nat) : Nat :=
@@ -90,7 +90,7 @@ axiom exponent_blindness (k : Nat) (hk : k > 0) :
 
 /-- General Divisor Theorem: Exact Correction Factor as Euler Prime Product. -/
 axiom C_factor_prime_product (d : Nat) (hd : d > 0) :
-    C_factor d = d.primeFactors.foldr (fun p acc => acc * ((p : Rat) / ((p : Rat) - 1))) 1
+    C_factor d = d.primeFactors.prod (fun p => (p : Rat) / ((p : Rat) - 1))
 
 /-!
 # Section 4: Specializations (Theorem 2, Theorem 1', Theorem 1)
@@ -101,8 +101,15 @@ theorem specialization_divides (N m : Nat) (hm : m > 0) (h_div : m ∣ N) :
     d_param N m = rad m ∧ C_factor (d_param N m) = (m : Rat) / (Nat.totient m : Rat) := by
   have h_gcd : Nat.gcd m N = m := Nat.gcd_eq_left h_div
   constructor
-  · unfold d_param; rw [h_gcd]
-  · unfold d_param; rw [h_gcd]
+  · unfold d_param
+    rw [h_gcd]
+  · unfold d_param
+    rw [h_gcd]
+    have hrad : rad m ≠ 0 := by
+      simp [rad, Nat.ne_of_gt hm]
+    have htot : Nat.totient (rad m) ≠ 0 :=
+      Nat.totient_ne_zero.mpr hrad
+    simp only [C_factor, if_neg htot]
     exact (exponent_blindness m hm).symm
 
 /-- Theorem 1' (Specialization Unitary Divisor): If gcd(m, N/m) = 1, then R = rad(N/m). -/
@@ -120,17 +127,17 @@ axiom specialization_primorial (N m : Nat) (h_sqf : ∀ p, p^2 ∣ N → p = 1) 
 /-- Concrete Instance 1 (m = 6, P_k = 210 = 2 * 3 * 5 * 7): Exact correction factor C(6) = 3. -/
 theorem instance_m6_C : C_factor 6 = 3 := by
   unfold C_factor
-  norm_num
+  norm_num [Nat.totient]
 
 /-- Concrete Instance 2 (m = 10, P_k = 210): Exact correction factor C(10) = 5 / 2 = 2.5. -/
 theorem instance_m10_C : C_factor 10 = 5 / 2 := by
   unfold C_factor
-  norm_num
+  norm_num [Nat.totient]
 
 /-- Concrete Instance 3 (m = 30, P_k = 210): Exact correction factor C(30) = 15 / 4 = 3.75. -/
 theorem instance_m30_C : C_factor 30 = 15 / 4 := by
   unfold C_factor
-  norm_num
+  norm_num [Nat.totient]
 
 /-- Distinguishing Example 1 (N = 18, m = 2): Coarser period N=18 vs Minimal period T_min = 6. -/
 theorem instance_minimal_period_18_2 :
@@ -143,7 +150,9 @@ theorem instance_minimal_period_18_2 :
     but d = rad(gcd(6, 5)) = 1, gcd(2, 1) = 1 (admissible under GDT!), C = 1. -/
 theorem instance_sharp_admissibility_5_6 :
     Nat.gcd 6 5 = 1 ∧ C_factor 1 = 1 := by
-  unfold C_factor
-  decide
+  constructor
+  · decide
+  · unfold C_factor
+    norm_num [Nat.totient]
 
 end GeneralDivisorTheorem
