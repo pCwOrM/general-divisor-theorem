@@ -169,17 +169,9 @@ Volkan's `S_indicator` is logically equivalent to Dan's `Good` predicate.
 -/
 theorem S_indicator_agrees (P : DanParams) (n : Nat) :
     S_indicator P.N P.m (P.a : Int) n ↔ DanRepresentation.Good P n := by
-  sorry
-
-/-!
-# Section 3: Two-Way Cross-Validation and Axiom Discharge
-
-Dan's theorems in `GDTReadingPoint` formally discharge Volkan's axioms:
-1. `inadmissible_empty_criterion` is discharged by Dan's `empty_of_not_admissible`.
-2. `indicator_factorization` is discharged by Dan's `good_residuePoint_iff_coprime_R`.
-3. `T_min_is_period` is discharged by Dan's `good_add_Tmin_iff`.
-4. Solution count `phi(R)` per minimal period is discharged by Dan's `goodCount_eq_totient_R`.
--/
+  unfold S_indicator DanRepresentation.Good
+  rw [Int.natCast_modEq_iff]
+  rfl
 
 /-- Discharging Theorem 3 Inadmissible Branch via Dan's Empty Theorem -/
 theorem bridge_inadmissible_empty (P : DanParams)
