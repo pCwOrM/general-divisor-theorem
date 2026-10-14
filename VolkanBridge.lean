@@ -110,8 +110,36 @@ Volkan's `R_param N m = rad N / d_param N m` equals Dan's `∏ q ∈ primeFactor
 -/
 theorem R_param_agrees (P : DanParams) :
     R_param P.N P.m = DanRepresentation.R P := by
-  -- Mathematical proof: (primeFactors N ∩ primeFactors m) ∪ (primeFactors N \ primeFactors m) = primeFactors N
-  sorry
+  let A := Nat.primeFactors P.N
+  let B := Nat.primeFactors P.m
+  let D := A ∩ B
+  let E := A \ B
+
+  have hprod : (∏ p ∈ D, p) * (∏ p ∈ E, p) =
+      ∏ p ∈ A, p := by
+    exact Finset.prod_inter_mul_prod_diff A B id
+
+  have hd : d_param P.N P.m = ∏ p ∈ D, p := by
+    rw [d_param_agrees P]
+    rfl
+
+  have hrad : rad P.N = ∏ p ∈ A, p := by
+    simp [rad, Nat.ne_of_gt P.hN, A]
+
+  have hDpos : 0 < ∏ p ∈ D, p := by
+    apply Finset.prod_pos
+    intro p hp
+    have hpA : p ∈ A := (Finset.mem_inter.mp hp).1
+    exact (Nat.mem_primeFactors.mp hpA).1.pos
+
+  have hquot : (∏ p ∈ A, p) / (∏ p ∈ D, p) =
+      ∏ p ∈ E, p := by
+    rw [← hprod]
+    exact Nat.mul_div_cancel_left _ (hDpos)
+
+  simp only [R_param, hd, hrad, if_neg (Nat.ne_of_gt hDpos)]
+  rw [hquot]
+  rfl
 
 /--
 Theorem (T_min-Agreement):
@@ -119,7 +147,8 @@ Volkan's `T_min N m = m * R_param N m` equals Dan's `Tmin P = m * R P`.
 -/
 theorem T_min_agrees (P : DanParams) :
     T_min P.N P.m = DanRepresentation.Tmin P := by
-  sorry
+  unfold T_min DanRepresentation.Tmin
+  rw [R_param_agrees P]
 
 /--
 Theorem (Correction Factor Agreement):
