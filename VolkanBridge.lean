@@ -155,8 +155,13 @@ Theorem (Correction Factor Agreement):
 Volkan's `C_factor d = d / phi(d)` equals Dan's `correctionFactor P`.
 -/
 theorem C_factor_agrees (P : DanParams) :
-    C_factor (d_param P.N P.m) = DanRepresentation.correctionFactor P := by
-  sorry
+    C_factor (d_param P.N P.m) =
+      DanRepresentation.correctionFactor P := by
+  rw [d_param_agrees P]
+  unfold C_factor DanRepresentation.correctionFactor
+  split_ifs with h
+  · simp [h]
+  · rfl
 
 /--
 Theorem (Indicator and Good-Set Equivalence):
