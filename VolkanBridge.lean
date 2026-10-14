@@ -177,7 +177,25 @@ theorem S_indicator_agrees (P : DanParams) (n : Nat) :
 theorem bridge_inadmissible_empty (P : DanParams)
     (h_inadm : ¬ DanRepresentation.Admissible P.a (DanRepresentation.d P)) :
     ∀ n : Nat, ¬ DanRepresentation.Good P n := by
-  sorry
+  have hgcd : 1 < Nat.gcd P.a (DanRepresentation.d P) := by
+    unfold DanRepresentation.Admissible at h_inadm
+    have hne : Nat.gcd P.a (DanRepresentation.d P) ≠ 1 := by
+      intro h
+      exact h_inadm h
+    have hdpos : 0 < DanRepresentation.d P := by
+      unfold DanRepresentation.d
+      apply Finset.prod_pos
+      intro p hp
+      exact (Nat.mem_primeFactors.mp (Finset.mem_inter.mp hp).1).1.pos
+    have hpos : 0 < Nat.gcd P.a (DanRepresentation.d P) :=
+      Nat.gcd_pos_of_pos_right P.a hdpos
+    omega
+  intro n hgood
+  have hind : S_indicator P.N P.m (P.a : Int) n :=
+    (S_indicator_agrees P n).2 hgood
+  have hbad := inadmissible_empty_criterion P.N P.m (P.a : Int)
+    (by simpa [d_param_agrees P] using hgcd) n hind.1
+  exact hbad hind.2
 
 /-- Discharging Theorem 3 Periodicity via Dan's Translation Theorem -/
 theorem bridge_periodic (P : DanParams) (n : Nat) :
