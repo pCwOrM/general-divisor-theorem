@@ -17,7 +17,9 @@ import Mathlib.Data.Nat.Totient
 import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.LinearCombination
 import Mathlib.Tactic.Ring
+import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.NormNum
 
 namespace GeneralDivisorTheorem
@@ -256,21 +258,243 @@ theorem T_min_is_period (N m : Nat) (a : Int) (n : Nat)
     exact ⟨hn, h₁.mpr (heq.mpr (h₂.mp hp))⟩
 
 
+private theorem prime_product_squarefree
+    (s : Finset Nat)
+    (hs : ∀ p ∈ s, Nat.Prime p) :
+    Squarefree (s.prod id) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+      simp
+  | @insert p s hp ih =>
+      have hps : Nat.Prime p := hs p (Finset.mem_insert_self p s)
+      have hrest : ∀ q ∈ s, Nat.Prime q := by
+        intro q hq
+        exact hs q (Finset.mem_insert_of_mem hq)
+      have hcop : Nat.Coprime p (s.prod id) := by
+        apply hps.coprime_iff_not_dvd.mpr
+        intro hdiv
+        obtain ⟨q, hq, hpq⟩ :=
+          (hps.prime.dvd_finset_prod_iff _).mp hdiv
+        have hp_eq_q : p = q :=
+          ((hrest q hq).dvd_iff_eq hps.ne_one).mp hpq |>.symm
+        exact hp (hp_eq_q ▸ hq)
+      rw [Finset.prod_insert hp]
+      exact (Nat.squarefree_mul hcop).mpr
+        ⟨hps.squarefree, ih hrest⟩
+
+private theorem rad_squarefree (N : Nat) (hN : N > 0) :
+    Squarefree (rad N) := by
+  have hN0 : N ≠ 0 := Nat.ne_of_gt hN
+  unfold rad
+  simp only [if_neg hN0]
+  apply prime_product_squarefree
+  intro p hp
+  exact Nat.prime_of_mem_primeFactors hp
+
+private theorem squarefree_eq_of_primeFactors_eq
+    {a b : Nat}
+    (ha : Squarefree a)
+    (hb : Squarefree b)
+    (h : a.primeFactors = b.primeFactors) :
+    a = b := by
+  calc
+    a = a.primeFactors.prod id :=
+      (Nat.prod_primeFactors_of_squarefree ha).symm
+    _ = b.primeFactors.prod id := by rw [h]
+    _ = b := Nat.prod_primeFactors_of_squarefree hb
+
+private theorem gcd_rad_eq (N m : Nat)
+    (hN : N > 0) (hm : m > 0) :
+    Nat.gcd m (rad N) = rad (Nat.gcd m N) := by
+  have hN0 : N ≠ 0 := Nat.ne_of_gt hN
+  have hm0 : m ≠ 0 := Nat.ne_of_gt hm
+  have hg0 : Nat.gcd m N ≠ 0 := by
+    intro h
+    exact hm0 (Nat.gcd_eq_zero_iff.mp h).1
+  have hr0 : rad N ≠ 0 := by
+    unfold rad
+    simp only [if_neg hN0]
+    exact Finset.prod_ne_zero_iff.mpr (by
+      intro p hp
+      exact (Nat.prime_of_mem_primeFactors hp).ne_zero)
+  have hleft : Squarefree (Nat.gcd m (rad N)) :=
+    (rad_squarefree N hN).squarefree_of_dvd
+      (Nat.gcd_dvd_right m (rad N))
+  have hright : Squarefree (rad (Nat.gcd m N)) :=
+    rad_squarefree (Nat.gcd m N) (Nat.pos_of_ne_zero hg0)
+  apply squarefree_eq_of_primeFactors_eq hleft hright
+  have hrad : (rad N).primeFactors = N.primeFactors := by
+    unfold rad
+    simp only [if_neg hN0]
+    apply Nat.primeFactors_prod
+    intro p hp
+    exact Nat.prime_of_mem_primeFactors hp
+  have hradg :
+      (rad (Nat.gcd m N)).primeFactors =
+        (Nat.gcd m N).primeFactors := by
+    unfold rad
+    simp only [if_neg hg0]
+    apply Nat.primeFactors_prod
+    intro p hp
+    exact Nat.prime_of_mem_primeFactors hp
+  calc
+    (Nat.gcd m (rad N)).primeFactors =
+        m.primeFactors ∩ (rad N).primeFactors :=
+      Nat.primeFactors_gcd hm0 hr0
+    _ = m.primeFactors ∩ N.primeFactors := by rw [hrad]
+    _ = (Nat.gcd m N).primeFactors :=
+      (Nat.primeFactors_gcd hm0 hN0).symm
+    _ = (rad (Nat.gcd m N)).primeFactors := hradg.symm
+
+private theorem period_eq_lcm (N m : Nat)
+    (hN : N > 0) (hm : m > 0) :
+    m * (rad N / rad (Nat.gcd m N)) =
+      Nat.lcm m (rad N) := by
+  have hg := gcd_rad_eq N m hN hm
+  have hdvd : rad (Nat.gcd m N) ∣ rad N := by
+    rw [← hg]
+    exact Nat.gcd_dvd_right m (rad N)
+  have hdecomp :
+      rad N =
+        rad (Nat.gcd m N) *
+          (rad N / rad (Nat.gcd m N)) :=
+    (Nat.mul_div_cancel' hdvd).symm
+  have hg0 : Nat.gcd m N ≠ 0 := by
+    intro h
+    exact (Nat.ne_of_gt hm) (Nat.gcd_eq_zero_iff.mp h).1
+  have hd0 : rad (Nat.gcd m N) ≠ 0 :=
+    (rad_squarefree (Nat.gcd m N)
+      (Nat.pos_of_ne_zero hg0)).ne_zero
+  have hprod := Nat.gcd_mul_lcm m (rad N)
+  rw [hg] at hprod
+  have heq :
+      rad (Nat.gcd m N) *
+          (m * (rad N / rad (Nat.gcd m N))) =
+        rad (Nat.gcd m N) * Nat.lcm m (rad N) := by
+    calc
+      _ = m * rad N := by
+        conv_rhs => rw [hdecomp]
+        ac_rfl
+      _ = rad (Nat.gcd m N) * Nat.lcm m (rad N) :=
+        hprod.symm
+  exact mul_left_cancel₀ hd0 heq
+
+
 /-- Minimal period identity: T_min = lcm(m, rad(N)). -/
-axiom T_min_eq_lcm (N m : Nat) (hN : N > 0) (hm : m > 0) :
-    T_min N m = Nat.lcm m (rad N)
+theorem T_min_eq_lcm (N m : Nat) (hN : N > 0) (hm : m > 0) :
+    T_min N m = Nat.lcm m (rad N) := by
+  unfold T_min R_param
+  have hg0 : Nat.gcd m N ≠ 0 := by
+    intro h
+    exact (Nat.ne_of_gt hm) (Nat.gcd_eq_zero_iff.mp h).1
+  have hd0 : d_param N m ≠ 0 := by
+    unfold d_param
+    exact (rad_squarefree (Nat.gcd m N)
+      (Nat.pos_of_ne_zero hg0)).ne_zero
+  simp only [if_neg hd0]
+  unfold d_param
+  exact period_eq_lcm N m hN hm
 
 /-!
 # Section 3: Exponent-Blindness and Product Representation
 -/
 
-/-- Lemma (Exponent-Blindness): k / phi(k) = rad(k) / phi(rad(k)) for all positive k. -/
-axiom exponent_blindness (k : Nat) (hk : k > 0) :
-    (k : Rat) / (Nat.totient k : Rat) = (rad k : Rat) / (Nat.totient (rad k) : Rat)
+private theorem rad_primeFactors (k : Nat) (hk : k > 0) :
+    (rad k).primeFactors = k.primeFactors := by
+  have hk0 : k ≠ 0 := Nat.ne_of_gt hk
+  unfold rad
+  simp only [if_neg hk0]
+  apply Nat.primeFactors_prod
+  intro p hp
+  exact Nat.prime_of_mem_primeFactors hp
+
+private theorem exponent_product_eq (k : Nat) (hk : k > 0) :
+    (Nat.totient k : Rat) * (rad k : Rat) =
+      (Nat.totient (rad k) : Rat) * (k : Rat) := by
+  have hprod := Nat.totient_eq_mul_prod_factors k
+  have hrad := Nat.totient_eq_mul_prod_factors (rad k)
+  rw [rad_primeFactors k hk] at hrad
+  rw [hprod, hrad]
+  ring
+
+theorem exponent_blindness (k : Nat) (hk : k > 0) :
+    (k : Rat) / (Nat.totient k : Rat) =
+      (rad k : Rat) / (Nat.totient (rad k) : Rat) := by
+  have hk0 : (Nat.totient k : Rat) ≠ 0 := by
+    exact_mod_cast (Nat.totient_pos.mpr hk).ne'
+  have hrpos : 0 < rad k := by
+    unfold rad
+    simp only [if_neg (Nat.ne_of_gt hk)]
+    exact Finset.prod_pos fun p hp =>
+      Nat.pos_of_mem_primeFactors hp
+  have hr0 : (Nat.totient (rad k) : Rat) ≠ 0 := by
+    exact_mod_cast (Nat.totient_pos.mpr hrpos).ne'
+  apply (div_eq_div_iff hk0 hr0).mpr
+  linear_combination -(exponent_product_eq k hk)
+
+
+
+
+
+private theorem factor_product_identity (d : Nat) (hd : d > 0) :
+    (d : Rat) / (Nat.totient d : Rat) =
+      d.primeFactors.prod
+        (fun p => (p : Rat) / ((p : Rat) - 1)) := by
+  have hd0 : (d : Rat) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt hd)
+  have htot : (Nat.totient d : Rat) ≠ 0 := by
+    exact_mod_cast (Nat.totient_pos.mpr hd).ne'
+  have hprod := Nat.totient_eq_mul_prod_factors d
+  have hfactor :
+      ∀ p ∈ d.primeFactors,
+        (1 - (p : Rat)⁻¹) *
+          ((p : Rat) / ((p : Rat) - 1)) = 1 := by
+    intro p hp
+    have hprime := Nat.prime_of_mem_primeFactors hp
+    have hp0 : (p : Rat) ≠ 0 := by
+      exact_mod_cast hprime.ne_zero
+    have hp1 : (p : Rat) - 1 ≠ 0 := by
+      have h : p ≠ 1 := hprime.ne_one
+      exact sub_ne_zero.mpr (by exact_mod_cast h)
+    field_simp
+    <;> ring
+  have hproducts :
+      (d.primeFactors.prod
+        (fun p => 1 - (p : Rat)⁻¹)) *
+      (d.primeFactors.prod
+        (fun p => (p : Rat) / ((p : Rat) - 1))) = 1 := by
+    rw [← Finset.prod_mul_distrib]
+    apply Finset.prod_eq_one
+    intro p hp
+    exact hfactor p hp
+  apply (div_eq_iff htot).mpr
+  rw [hprod]
+  calc
+    (d : Rat) =
+        (d : Rat) * 1 := (mul_one _).symm
+    _ = (d : Rat) *
+        ((d.primeFactors.prod
+          (fun p => 1 - (p : Rat)⁻¹)) *
+         (d.primeFactors.prod
+          (fun p => (p : Rat) / ((p : Rat) - 1)))) := by
+      rw [hproducts]
+    _ = (d.primeFactors.prod
+          (fun p => (p : Rat) / ((p : Rat) - 1))) *
+        ((d : Rat) *
+         (d.primeFactors.prod
+          (fun p => 1 - (p : Rat)⁻¹))) := by
+      ring
+
 
 /-- General Divisor Theorem: Exact Correction Factor as Euler Prime Product. -/
-axiom C_factor_prime_product (d : Nat) (hd : d > 0) :
-    C_factor d = d.primeFactors.prod (fun p => (p : Rat) / ((p : Rat) - 1))
+theorem C_factor_prime_product (d : Nat) (hd : d > 0) :
+    C_factor d = d.primeFactors.prod (fun p => (p : Rat) / ((p : Rat) - 1)) := by
+  unfold C_factor
+  have htot : Nat.totient d ≠ 0 :=
+    (Nat.totient_pos.mpr hd).ne'
+  simp only [if_neg htot]
+  exact factor_product_identity d hd
 
 /-!
 # Section 4: Specializations (Theorem 2, Theorem 1', Theorem 1)
@@ -295,13 +519,247 @@ theorem specialization_divides (N m : Nat) (hm : m > 0) (h_div : m ∣ N) :
     simp only [C_factor, if_neg htot]
     exact (exponent_blindness m hm).symm
 
+private theorem rad_mul_coprime
+    (a b : Nat) (ha : a > 0) (hb : b > 0)
+    (hab : Nat.Coprime a b) :
+    rad (a * b) = rad a * rad b := by
+  have ha0 : a ≠ 0 := Nat.ne_of_gt ha
+  have hb0 : b ≠ 0 := Nat.ne_of_gt hb
+  have hab0 : a * b ≠ 0 := mul_ne_zero ha0 hb0
+  have hdisj :
+      Disjoint a.primeFactors b.primeFactors := by
+    apply Finset.disjoint_left.mpr
+    intro p hpa hpb
+    have hp : Nat.Prime p :=
+      Nat.prime_of_mem_primeFactors hpa
+    have hdiva : p ∣ a :=
+      (Nat.mem_primeFactors.mp hpa).2.1
+    have hdivb : p ∣ b :=
+      (Nat.mem_primeFactors.mp hpb).2.1
+    have hdivgcd : p ∣ Nat.gcd a b :=
+      Nat.dvd_gcd hdiva hdivb
+    rw [hab.gcd_eq_one] at hdivgcd
+    exact hp.ne_one (Nat.dvd_one.mp hdivgcd)
+  unfold rad
+  simp only [if_neg ha0, if_neg hb0, if_neg hab0]
+  rw [Nat.primeFactors_mul ha0 hb0]
+  exact Finset.prod_union hdisj
+
+
+private theorem rad_pos (n : Nat) (hn : n > 0) :
+    0 < rad n := by
+  have hn0 : n ≠ 0 := Nat.ne_of_gt hn
+  unfold rad
+  simp only [if_neg hn0]
+  exact Finset.prod_pos (by
+    intro p hp
+    exact (Nat.prime_of_mem_primeFactors hp).pos)
+
+private theorem unitary_rad_quotient
+    (N m : Nat) (hm : m > 0)
+    (h_div : m ∣ N)
+    (h_unit : Nat.Coprime m (N / m))
+    (hN : N > 0) :
+    rad N = rad m * rad (N / m) := by
+  have hq : N / m > 0 := by
+    have hN0 : N ≠ 0 := Nat.ne_of_gt hN
+    have hq0 : N / m ≠ 0 := by
+      intro hz
+      have heq := Nat.mul_div_cancel' h_div
+      rw [hz] at heq
+      simp at heq
+      exact hN0 heq.symm
+    exact Nat.pos_of_ne_zero hq0
+  have hNmul : m * (N / m) = N :=
+    Nat.mul_div_cancel' h_div
+  calc
+    rad N = rad (m * (N / m)) := by rw [hNmul]
+    _ = rad m * rad (N / m) :=
+      rad_mul_coprime m (N / m) hm hq h_unit
+
+
+private theorem unitary_gcd
+    (N m : Nat) (h_div : m ∣ N) :
+    Nat.gcd m N = m := by
+  exact Nat.gcd_eq_left_iff_dvd.mpr h_div
+
+private theorem unitary_rad_cancel
+    (N m : Nat) (hm : m > 0)
+    (h_div : m ∣ N)
+    (h_unit : Nat.Coprime m (N / m))
+    (hN : N > 0)
+    (R : Nat)
+    (hR : rad N = rad (Nat.gcd m N) * R) :
+    R = rad (N / m) := by
+  have hgcd : Nat.gcd m N = m :=
+    unitary_gcd N m h_div
+  rw [hgcd] at hR
+  have hrad :
+      rad N = rad m * rad (N / m) :=
+    unitary_rad_quotient N m hm h_div h_unit hN
+  have hpos : 0 < rad m := rad_pos m hm
+  exact Nat.eq_of_mul_eq_mul_left hpos (hR.symm.trans hrad)
+
+
 /-- Theorem 1' (Specialization Unitary Divisor): If gcd(m, N/m) = 1, then R = rad(N/m). -/
-axiom specialization_unitary (N m : Nat) (hm : m > 0) (h_div : m ∣ N) (h_unit : Nat.Coprime m (N / m)) :
-    R_param N m = rad (N / m) ∧ T_min N m = m * rad (N / m)
+theorem specialization_unitary (N m : Nat) (hm : m > 0)
+    (h_div : m ∣ N) (h_unit : Nat.Coprime m (N / m)) :
+    R_param N m = rad (N / m) ∧
+    T_min N m = m * rad (N / m) := by
+  have hR : R_param N m = rad (N / m) := by
+    by_cases hN : N = 0
+    · subst N
+      simp [R_param, d_param, rad]
+    · have hNpos : N > 0 := Nat.pos_of_ne_zero hN
+      exact unitary_rad_cancel N m hm h_div h_unit hNpos
+        (R_param N m) (rad_eq_d_mul_R N m)
+  constructor
+  · exact hR
+  · unfold T_min
+    rw [hR]
+
+private theorem primorial_squarefree
+    (N : Nat)
+    (h_sqf : ∀ p, p^2 ∣ N → p = 1) :
+    Squarefree N := by
+  intro p hp
+  rw [h_sqf p (by simpa [pow_two] using hp)]
+  exact isUnit_one
+
+private theorem primorial_positive
+    (N : Nat)
+    (h_sqf : ∀ p, p^2 ∣ N → p = 1) :
+    N > 0 := by
+  have hN : N ≠ 0 := by
+    intro hz
+    have h : (2 : Nat)^2 ∣ N := by
+      rw [hz]
+      exact dvd_zero _
+    have heq := h_sqf 2 h
+    omega
+  omega
+
+
+private theorem primorial_divisor_squarefree
+    (N m : Nat) (hN : Squarefree N)
+    (hm : m ∣ N) :
+    Squarefree m := by
+  intro x hx
+  apply hN x
+  exact dvd_trans hx hm
+
+private theorem primorial_quotient_squarefree
+    (N m : Nat) (hN : Squarefree N)
+    (hm : m ∣ N) :
+    Squarefree (N / m) := by
+  intro x hx
+  apply hN x
+  exact dvd_trans hx (Nat.div_dvd_of_dvd hm)
+
+private theorem primorial_coprime
+    (N m : Nat) (hN : Squarefree N)
+    (hm : m ∣ N) :
+    Nat.Coprime m (N / m) := by
+  have hmul : m * (N / m) = N :=
+    Nat.mul_div_cancel' hm
+  have hg : Nat.gcd m (N / m) = 1 := by
+    by_contra h
+    have hgpos : 0 < Nat.gcd m (N / m) := by
+      have hN0 : N ≠ 0 := by
+        intro hz
+        have hzero : Squarefree (0 : Nat) := by
+          rw [hz] at hN
+          exact hN
+        have hu := hzero 2 (dvd_zero _)
+        have heq : (2 : Nat) = 1 := Nat.isUnit_iff.mp hu
+        omega
+      have hm0 : m ≠ 0 := by
+        intro hz
+        have : N = 0 := by
+          rw [← hmul, hz]
+          simp
+        exact hN0 this
+      exact Nat.pos_of_ne_zero (by
+        intro hz
+        have := Nat.gcd_eq_zero_iff.mp hz
+        exact hm0 this.1)
+    have hg2 : 2 ≤ Nat.gcd m (N / m) := by omega
+    obtain ⟨p, hp, hpdvd⟩ :=
+      Nat.exists_prime_and_dvd (by omega : Nat.gcd m (N / m) ≠ 1)
+    have hpm : p ∣ m :=
+      dvd_trans hpdvd (Nat.gcd_dvd_left _ _)
+    have hpq : p ∣ N / m :=
+      dvd_trans hpdvd (Nat.gcd_dvd_right _ _)
+    have hp2 : p * p ∣ N := by
+      rw [← hmul]
+      exact mul_dvd_mul hpm hpq
+    have hu := hN p hp2
+    have hp1 : p = 1 := Nat.isUnit_iff.mp hu
+    exact hp.ne_one hp1
+  exact hg
+
+
 
 /-- Theorem 1 (Primorial Specialization): If N = P_k is squarefree and m | P_k, then d = m, R = P_k / m, and T_min = P_k. -/
-axiom specialization_primorial (N m : Nat) (h_sqf : ∀ p, p^2 ∣ N → p = 1) (hm_div : m ∣ N) (hm : m > 1) :
-    d_param N m = m ∧ R_param N m = N / m ∧ T_min N m = N ∧ C_factor (d_param N m) = (m : Rat) / (Nat.totient m : Rat)
+theorem specialization_primorial (N m : Nat)
+    (h_sqf : ∀ p, p^2 ∣ N → p = 1)
+    (hm_div : m ∣ N) (hm : m > 1) :
+    d_param N m = m ∧ R_param N m = N / m ∧
+    T_min N m = N ∧
+    C_factor (d_param N m) =
+      (m : Rat) / (Nat.totient m : Rat) := by
+  have hmpos : m > 0 := by omega
+  have hNsf : Squarefree N := primorial_squarefree N h_sqf
+  have hmsf : Squarefree m :=
+    primorial_divisor_squarefree N m hNsf hm_div
+  have hqsf : Squarefree (N / m) :=
+    primorial_quotient_squarefree N m hNsf hm_div
+  have hcop : Nat.Coprime m (N / m) :=
+    primorial_coprime N m hNsf hm_div
+  have hdm : d_param N m = m := by
+    unfold d_param rad
+    rw [Nat.gcd_eq_left_iff_dvd.mpr hm_div]
+    have hm0 : m ≠ 0 := by omega
+    simp only [if_neg hm0]
+    exact Nat.prod_primeFactors_of_squarefree hmsf
+  have hunit :=
+    specialization_unitary N m hmpos hm_div hcop
+  have hR : R_param N m = N / m := by
+    calc
+      R_param N m = rad (N / m) := hunit.1
+      _ = N / m := by
+        unfold rad
+        have hq0 : N / m ≠ 0 := by
+          have hNpos := primorial_positive N h_sqf
+          have hmul := Nat.mul_div_cancel' hm_div
+          intro hz
+          rw [hz] at hmul
+          simp at hmul
+          omega
+        simp only [if_neg hq0]
+        exact Nat.prod_primeFactors_of_squarefree hqsf
+  have hT : T_min N m = N := by
+    calc
+      T_min N m = m * rad (N / m) := hunit.2
+      _ = m * (N / m) := by
+        congr 1
+        unfold rad
+        have hq0 : N / m ≠ 0 := by
+          have hNpos := primorial_positive N h_sqf
+          have hmul := Nat.mul_div_cancel' hm_div
+          intro hz
+          rw [hz] at hmul
+          simp at hmul
+          omega
+        simp only [if_neg hq0]
+        exact Nat.prod_primeFactors_of_squarefree hqsf
+      _ = N := Nat.mul_div_cancel' hm_div
+  refine ⟨hdm, hR, hT, ?_⟩
+  rw [hdm]
+  unfold C_factor
+  have htot : Nat.totient m ≠ 0 :=
+    (Nat.totient_pos.mpr hmpos).ne'
+  simp only [if_neg htot]
 
 /-!
 # Section 5: Machine-Verified Concrete Instances & Test Suite
