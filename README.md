@@ -15,6 +15,29 @@
 
 Machine-certified formalization of the **General Divisor Theorem (GDT)**: exact density correction under residue conditioning, formalized in Lean 4.
 
+### Kernel-Verified Theorem Milestone — October 2026
+
+All five original axioms in `GeneralDivisorTheorem.lean` have been replaced by Lean 4 theorems:
+
+| Theorem | Verification |
+|---|---|
+| `T_min_eq_lcm` | Kernel-checked |
+| `exponent_blindness` | Kernel-checked |
+| `C_factor_prime_product` | Kernel-checked |
+| `specialization_unitary` | Kernel-checked |
+| `specialization_primorial` | Kernel-checked |
+
+**Verification results**
+
+- `lake build GeneralDivisorTheorem VolkanBridge` — PASS
+- Original project-defined axioms remaining in `GeneralDivisorTheorem.lean` — 0
+- `sorry` / `admit` occurrences — 0
+- Dependency audit — `propext`, `Classical.choice`, `Quot.sound` only, for all five theorems
+
+**Verified commit:** `9f1a744` on branch `gdt-kernel-bridge`.
+
+The results certify the exact formal statements under their specified hypotheses. The foundational axioms listed above are standard Lean dependencies, rather than additional GDT assumptions.
+
 Based on the monograph by **thinkthoughts** (Dan, [@Precedent_Vice](https://x.com/Precedent_Vice)):
 > *The General Divisor Theorem: Exact Density Correction under Residue Conditioning* (Draft v3.3)  
 > Paper: [https://antiviolence.ai/gdt.pdf](https://antiviolence.ai/gdt.pdf) (Permanent Mirror: [docs/gdt.pdf](docs/gdt.pdf))  
