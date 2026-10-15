@@ -135,7 +135,8 @@ The core theorems and definitions are formalized in [`GeneralDivisorTheorem.lean
 ```lean
 -- Exact correction factor definition
 def C_factor (d : Nat) : Rat :=
-  (d : Rat) / (Nat.totient d : Rat)
+  if Nat.totient d = 0 then 0
+  else (d : Rat) / (Nat.totient d : Rat)
 
 -- Verified concrete instances
 theorem instance_m6_C  : C_factor 6 = 3 := by unfold C_factor; norm_num
@@ -165,10 +166,36 @@ python scripts/verify_bridge.py
 
 Build the Lean 4 package with Lake:
 ```bash
-lake build
+lake build GeneralDivisorTheorem VolkanBridge
 ```
 
----
+### Lean Kernel Dependency Audit
+
+The five formerly axiomatized theorems are independently auditable using Lean's `#print axioms` command.
+
+Create `GDT_AxiomAudit.lean`:
+
+```lean
+import GeneralDivisorTheorem
+
+#print axioms GeneralDivisorTheorem.T_min_eq_lcm
+#print axioms GeneralDivisorTheorem.exponent_blindness
+#print axioms GeneralDivisorTheorem.C_factor_prime_product
+#print axioms GeneralDivisorTheorem.specialization_unitary
+#print axioms GeneralDivisorTheorem.specialization_primorial
+```
+
+Run:
+
+```bash
+lake env lean GDT_AxiomAudit.lean
+```
+
+All five theorems report exactly:
+
+`[propext, Classical.choice, Quot.sound]`
+
+These are Lean's standard classical foundations. No additional project-specific axioms are required for these five results.
 
 ## 5. Citation & Attribution
 
