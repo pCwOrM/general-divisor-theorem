@@ -206,9 +206,36 @@ def main():
     print(f"  ✓ (N, m) parameter pairs tested: {total_pairs} (100% agreement)")
     print(f"  ✓ (N, m, a) residue triples tested: {total_triples} (100% agreement)")
     print(f"  ✓ Full-period solution counting simulations: {total_period_solutions} (100% exact)")
+
+    # 3. DensityBridge.lean & Rational Natural Density Identity Verification
+    print("\n[Phase 3] DensityBridge.lean (`gdt_count_per_period` & Natural Density Bridge):")
+    density_checks = 0
+    for N in N_samples:
+        for m in m_samples:
+            d = volkan_d(N, m)
+            R = volkan_R(N, m)
+            Tmin = volkan_Tmin(N, m)
+            radN = volkan_rad(N)
+            # Verify gcd(m, R) == 1 (coprime_m_R in DensityBridge.lean)
+            assert math.gcd(m, R) == 1, f"coprime_m_R failed at N={N}, m={m}"
+            # Verify exact rational natural density identity:
+            # delta(S) = phi(R) / (m * R) == (1 / m) * (phi(rad(N)) / rad(N)) * C(d)
+            delta_period = Q(phi(R), Tmin)
+            naive_rad_density = Q(1, m) * Q(phi(radN), radN)
+            corrected_density = naive_rad_density * volkan_C(d)
+            assert delta_period == corrected_density, (
+                f"Natural density mismatch at N={N}, m={m}: {delta_period} != {corrected_density}"
+            )
+            density_checks += 1
+
+    print(f"  ✓ Disjoint support coprimality `coprime_m_R` (gcd(m, R) = 1): {density_checks} pairs [PASS]")
+    print(f"  ✓ Exact period count `gdt_count_per_period` (#S_period = phi(R)): {total_period_solutions} periods [PASS]")
+    print(f"  ✓ Rational natural density identity delta(S) = phi(R)/(m*R) = (phi(rad(N))/(m*rad(N)))*C(d): {density_checks} pairs [PASS]")
+
     print("\n" + "=" * 70)
-    print("  TWO-WAY BRIDGE CROSS-VALIDATION: 100% PASS (0 DEFECTS)")
+    print("  TWO-WAY BRIDGE & DENSITY BRIDGE: 100% PASS (0 DEFECTS)")
     print("=" * 70)
 
 if __name__ == "__main__":
     main()
+

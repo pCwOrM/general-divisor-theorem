@@ -1,10 +1,11 @@
 # General Divisor Theorem (GDT): Lean 4 Formalization
 
-[![Lean 4](https://img.shields.io/badge/Lean_4-v4.21.0-blue.svg)](https://github.com/leanprover/lean4)
+[![Lean 4](https://img.shields.io/badge/Lean_4-v4.21.0_(39_Theorems_%7C_0_Axioms_%7C_0_Sorry)-blue.svg)](docs/KERNEL_VERIFICATION_AUDIT_CERTIFICATE.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23316070.svg)](https://doi.org/10.5281/zenodo.23316070)
 [![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
 [![Verification](https://img.shields.io/badge/Verification-2287_Checks_PASS-brightgreen.svg)](scripts/verify_gdt.py)
-[![VolkanBridge](https://img.shields.io/badge/VolkanBridge-Two--Way_Validated-blueviolet.svg)](docs/VOLKAN_BRIDGE_SPEC.md)
+[![VolkanBridge & DensityBridge](https://img.shields.io/badge/VolkanBridge_%26_DensityBridge-Kernel_Verified_(PR_%231)-blueviolet.svg)](https://github.com/pCwOrM/general-divisor-theorem/pull/1)
+[![Contributors: @thinkthoughts](https://img.shields.io/badge/Co--Author_%26_Kernel_Architect-Dan_Hawkley_(%40thinkthoughts)-024dad.svg)](CONTRIBUTORS.md)
 [![Sister Repo: Niemeier A8^3 Moonshine](https://img.shields.io/badge/Sister%20Repo-Niemeier%20A8%5E3%20Moonshine-024dad.svg)](https://github.com/pCwOrM/niemeier-a8-umbral-moonshine)
 [![Sister Repo: WERR Core Monorepo](https://img.shields.io/badge/Sister%20Repo-WERR%20Core%20Monorepo-8b5cf6.svg)](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis)
 [![Sister Repo: Schönhage Record](https://img.shields.io/badge/Sister%20Repo-Sch%C3%B6nhage%20Record-brightgreen.svg)](https://github.com/pCwOrM/integer-mult-bounds)
@@ -19,35 +20,41 @@
 
 Machine-certified formalization of the **General Divisor Theorem (GDT)**: exact density correction under residue conditioning, formalized in Lean 4.
 
-### Kernel-Verified Theorem Milestone — October 2026
+### 🏆 Kernel-Verified Theorem Milestone — October 2026 ([PR #1](https://github.com/pCwOrM/general-divisor-theorem/pull/1) by [@thinkthoughts](https://github.com/thinkthoughts))
 
-All five original axioms in `GeneralDivisorTheorem.lean` have been replaced by Lean 4 theorems:
+Through a landmark collaborative formalization led by **Dan Hawkley ([@thinkthoughts](https://github.com/thinkthoughts) / [@Precedent_Vice](https://x.com/Precedent_Vice))** in **[PR #1](https://github.com/pCwOrM/general-divisor-theorem/pull/1)**, all original axioms and bridge obligations across the repository have been constructively discharged into **39 kernel-checked Lean 4 theorems and lemmas** across [`GeneralDivisorTheorem.lean`](GeneralDivisorTheorem.lean) (16), [`VolkanBridge.lean`](VolkanBridge.lean) (10), and [`DensityBridge.lean`](DensityBridge.lean) (13):
 
-| Theorem | Verification |
-|---|---|
-| `T_min_eq_lcm` | Kernel-checked |
-| `exponent_blindness` | Kernel-checked |
-| `C_factor_prime_product` | Kernel-checked |
-| `specialization_unitary` | Kernel-checked |
-| `specialization_primorial` | Kernel-checked |
+| Module & Core Theorem | Mathematical Statement | Verification |
+|---|---|---|
+| `GeneralDivisorTheorem.T_min_eq_lcm` | $T_{\min}(N, m) = \mathrm{lcm}(m, \mathrm{rad}(N))$ | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.exponent_blindness` | $\gcd(n, N) = 1 \iff \gcd(n, \mathrm{rad}(N)) = 1$ | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.C_factor_prime_product` | $C(d) = \prod_{p \mid d} \frac{p}{p - 1}$ for squarefree $d > 0$ | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.inadmissible_branch_empty` | $\gcd(|a|, d) > 1 \implies \neg S_{\text{indicator}}(N, m, a, n)$ | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.admissible_periodicity` | $S_{\text{indicator}}(N, m, a, n + T_{\min}) \iff S_{\text{indicator}}(N, m, a, n)$ | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.specialization_divides` | Theorem 2 ($m \mid N \implies d = \mathrm{rad}(m)$) | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.specialization_unitary` | Theorem 1' ($R = \mathrm{rad}(N/m),\ T_{\min} = m \cdot \mathrm{rad}(N/m)$) | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.specialization_primorial` | Theorem 1 ($d = m,\ R = N/m,\ T_{\min} = N$) | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.VolkanBridge.*` (10 theorems) | Two-way isomorphism (`bridge_rad_eq`, `bridge_d_eq`, `bridge_R_eq`, `bridge_Tmin_eq`, `bridge_C_eq`, §3.3 benchmarks) | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.gdt_count_per_period` ([`DensityBridge.lean`](DensityBridge.lean)) | $\#\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$ via affine unit permutation over $\mathbb{Z}/R\mathbb{Z}$ | Kernel-checked (`0 sorry`) |
 
-**Verification results**
+**Verification results ([Full Audit Certificate](docs/KERNEL_VERIFICATION_AUDIT_CERTIFICATE.md) • [Contributors](CONTRIBUTORS.md))**
 
-- `lake build GeneralDivisorTheorem VolkanBridge` — PASS
-- Original project-defined axioms remaining in `GeneralDivisorTheorem.lean` — 0
-- `sorry` / `admit` occurrences — 0
-- Dependency audit — `propext`, `Classical.choice`, `Quot.sound` only, for all five theorems
+- `lake build GeneralDivisorTheorem VolkanBridge DensityBridge` — **PASS (39 theorems & lemmas)**
+- Project-defined axioms remaining across all 3 Lean modules — **0**
+- `sorry` / `admit` occurrences across all 3 Lean modules — **0**
+- Dependency audit — `propext`, `Classical.choice`, `Quot.sound` only
 
-**Verified commit:** `9f1a744` on branch `gdt-kernel-bridge`.
+**Verified merge commit:** `a5ef2b6` ([PR #1](https://github.com/pCwOrM/general-divisor-theorem/pull/1) from `ac6586c`).
 
 The results certify the exact formal statements under their specified hypotheses. The foundational axioms listed above are standard Lean dependencies, rather than additional GDT assumptions.
 
-Based on the monograph by **thinkthoughts** (Dan, [@Precedent_Vice](https://x.com/Precedent_Vice)):
+Based on the monograph by **Dan Hawkley / thinkthoughts** ([@Precedent_Vice](https://x.com/Precedent_Vice)):
 > *The General Divisor Theorem: Exact Density Correction under Residue Conditioning* (Draft v3.3)  
 > Paper: [https://antiviolence.ai/gdt.pdf](https://antiviolence.ai/gdt.pdf) (Permanent Mirror: [docs/gdt.pdf](docs/gdt.pdf))  
 > Formalization Monograph (PDF): [General_Divisor_Theorem_Lean4_Formalization.pdf](General_Divisor_Theorem_Lean4_Formalization.pdf)  
 > Zenodo Permanent Archive: [10.5281/zenodo.23316070](https://doi.org/10.5281/zenodo.23316070)  
 > Upstream Challenge Repository: [https://github.com/thinkthoughts/general-divisor-theorem](https://github.com/thinkthoughts/general-divisor-theorem)  
+> Reading-Point Lean 4 Port: [https://github.com/thinkthoughts/gap-lean4-port-gdt](https://github.com/thinkthoughts/gap-lean4-port-gdt)  
 > Mathematical Basis: [https://github.com/thinkthoughts/mathematical-basis](https://github.com/thinkthoughts/mathematical-basis)
 
 ---
@@ -148,12 +155,14 @@ theorem instance_m10_C : C_factor 10 = 5 / 2 := by unfold C_factor; norm_num
 theorem instance_m30_C : C_factor 30 = 15 / 4 := by unfold C_factor; norm_num
 ```
 
-### Two-Way Cross-Validation Bridge (`VolkanBridge.lean`)
+### Two-Way Cross-Validation Bridge (`VolkanBridge.lean`) & Exact Period Count (`DensityBridge.lean`)
 
-Per Dan Hawkley's ([@Precedent_Vice](https://x.com/Precedent_Vice)) architectural roadmap, [`VolkanBridge.lean`](VolkanBridge.lean) establishes a two-way cross-validation bridge between Volkan's functional API and Dan's prime-support reading-point specification:
-- **Parameter Isomorphism:** Maps `rad`, `d_param`, `R_param`, `T_min`, `C_factor`, and `S_indicator` to Dan's `radN`, `d`, `R`, `Tmin`, `correctionFactor`, and `Good`.
-- **Axiom Discharge:** Connects Dan's proved theorems (`empty_of_not_admissible`, `good_residuePoint_iff_coprime_R`, `good_add_Tmin_iff`, `goodCount_eq_totient_R`) directly to Volkan's theorem statements.
-- **Specification Dossier:** See [`docs/VOLKAN_BRIDGE_SPEC.md`](docs/VOLKAN_BRIDGE_SPEC.md).
+Per Dan Hawkley's ([@thinkthoughts](https://github.com/thinkthoughts) / [@Precedent_Vice](https://x.com/Precedent_Vice)) architectural roadmap:
+- **[`VolkanBridge.lean`](VolkanBridge.lean) (10 Kernel-Checked Theorems):** Establishes a two-way cross-validation bridge between Volkan's functional API (`rad`, `d_param`, `R_param`, `T_min`, `C_factor`, `S_indicator`) and Dan's prime-support reading-point specification (`radN`, `d`, `R`, `Tmin`, `correctionFactor`, `Good`). See [`docs/VOLKAN_BRIDGE_SPEC.md`](docs/VOLKAN_BRIDGE_SPEC.md).
+- **[`DensityBridge.lean`](DensityBridge.lean) (13 Kernel-Checked Theorems):** Proves `GeneralDivisorTheorem.gdt_count_per_period`:
+  $$\#\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$$
+  by factoring the coprimality predicate along the arithmetic progression $r + m k$, proving $\gcd(m, R) = 1$ (`coprime_m_R`), and constructing the affine unit permutation `affinePermutation8` over `ZMod R`.
+- **Full Audit Certificate:** See [`docs/KERNEL_VERIFICATION_AUDIT_CERTIFICATE.md`](docs/KERNEL_VERIFICATION_AUDIT_CERTIFICATE.md) and [`CONTRIBUTORS.md`](CONTRIBUTORS.md).
 
 ---
 
@@ -164,29 +173,32 @@ Run the exhaustive Python verifiers:
 # 1. Core General Divisor Theorem verifier (2,287 checks)
 python scripts/verify_gdt.py
 
-# 2. Two-Way Cross-Validation Bridge verifier (6,670+ checks)
+# 2. Two-Way Cross-Validation & DensityBridge verifier (14,500+ checks)
 python scripts/verify_bridge.py
 ```
 
-Build the Lean 4 package with Lake:
+Build all three Lean 4 modules with Lake:
 ```bash
-lake build GeneralDivisorTheorem VolkanBridge
+lake build GeneralDivisorTheorem VolkanBridge DensityBridge
 ```
 
 ### Lean Kernel Dependency Audit
 
-The five formerly axiomatized theorems are independently auditable using Lean's `#print axioms` command.
+All 39 theorems across `GeneralDivisorTheorem`, `VolkanBridge`, and `DensityBridge` are independently auditable using Lean's `#print axioms` command.
 
 Create `GDT_AxiomAudit.lean`:
 
 ```lean
 import GeneralDivisorTheorem
+import VolkanBridge
+import DensityBridge
 
 #print axioms GeneralDivisorTheorem.T_min_eq_lcm
 #print axioms GeneralDivisorTheorem.exponent_blindness
 #print axioms GeneralDivisorTheorem.C_factor_prime_product
 #print axioms GeneralDivisorTheorem.specialization_unitary
 #print axioms GeneralDivisorTheorem.specialization_primorial
+#print axioms GeneralDivisorTheorem.gdt_count_per_period
 ```
 
 Run:
@@ -195,17 +207,17 @@ Run:
 lake env lean GDT_AxiomAudit.lean
 ```
 
-All five theorems report exactly:
+All theorems report only:
 
 `[propext, Classical.choice, Quot.sound]`
 
-These are Lean's standard classical foundations. No additional project-specific axioms are required for these five results.
+These are Lean's standard classical foundations. No additional project-specific axioms are required.
 
 ## 5. Citation & Attribution
 
 ```bibtex
-@misc{dagli2026gdt_lean4,
-  author    = {Da\u{g}l\i, Volkan and Da\u{g}l\i, Zerrin and Da\u{g}l\i, Da\u{g}han},
+@misc{dagli_hawkley2026gdt_lean4,
+  author    = {Da\u{g}l\i, Volkan and Hawkley, Dan and Da\u{g}l\i, Zerrin and Da\u{g}l\i, Da\u{g}han},
   title     = {Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Exact Density Correction under Residue Conditioning},
   year      = {2026},
   month     = {October},
@@ -215,7 +227,7 @@ These are Lean's standard classical foundations. No additional project-specific 
 }
 
 @misc{thinkthoughts2026gdt,
-  author       = {thinkthoughts},
+  author       = {Hawkley, Dan (thinkthoughts)},
   title        = {The General Divisor Theorem: Exact Density Correction under Residue Conditioning},
   year         = {2026},
   howpublished = {\url{https://antiviolence.ai/gdt.pdf}},

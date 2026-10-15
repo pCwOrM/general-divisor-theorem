@@ -1,11 +1,15 @@
 {
   "title": "Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Exact Density Correction under Residue Conditioning",
-  "description": "Standalone machine-checked Lean 4 formalization of the General Divisor Theorem (GDT). Proves exact minimal period T_min = lcm(m, rad(N)), sharp admissibility gcd(a, d) = 1, and the Euler product correction factor C(N, m) = d / phi(d) with 0 sorry. Includes an exhaustive 2,287-parameter Python verification suite. Based on the theoretical monograph by thinkthoughts (Dan, @Precedent_Vice).",
+  "description": "Standalone machine-checked Lean 4 formalization of the General Divisor Theorem (GDT) across GeneralDivisorTheorem.lean, VolkanBridge.lean, and DensityBridge.lean (39 kernel-checked theorems and lemmas, 0 custom axioms, 0 sorry). Proves exact minimal period T_min = lcm(m, rad(N)), sharp admissibility gcd(a, d) = 1, the Euler product correction factor C(N, m) = d / phi(d), and the exact per-period count #{0 <= n < T_min : n === a (mod m), gcd(n, N) = 1} = phi(R) via affine units over ZMod R. Includes exhaustive Python verification suites.",
   "creators": [
     {
       "name": "Dağlı, Volkan",
       "affiliation": "Anadolu University, Eskişehir, Türkiye & ITouch Systems, Adana, Türkiye",
       "orcid": "0009-0000-1587-8703"
+    },
+    {
+      "name": "Hawkley, Dan",
+      "affiliation": "Independent Researcher (@thinkthoughts / @Precedent_Vice, antiviolence.ai)"
     },
     {
       "name": "Dağlı, Zerrin",
@@ -37,11 +41,18 @@
     "Euler Totient",
     "Mathlib",
     "Interactive Theorem Proving",
-    "Machine-Certified Proofs"
+    "Machine-Certified Proofs",
+    "WERR Ecosystem"
   ],
   "related_identifiers": [
     {
       "identifier": "https://github.com/pCwOrM/general-divisor-theorem",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/pCwOrM/general-divisor-theorem/pull/1",
       "relation": "isSupplementTo",
       "resource_type": "software",
       "scheme": "url"
@@ -61,6 +72,12 @@
     {
       "identifier": "https://github.com/thinkthoughts/general-divisor-theorem",
       "relation": "isDerivedFrom",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/thinkthoughts/gap-lean4-port-gdt",
+      "relation": "references",
       "resource_type": "software",
       "scheme": "url"
     },
