@@ -59,7 +59,7 @@ Following the integration of [PR #1](https://github.com/pCwOrM/general-divisor-t
 3. `progression_surjective`: Bijection between $[0, T_{\min})$ congruence solutions and $r + m k$ for $0 \le k < R$
 4. `R_param_pos`: Strict positivity $0 < R(N, m)$
 5. `coprime_m_R`: Disjoint prime support coprimality $\gcd(m, R) = 1$
-6. `coprime_zmod_card`: $\#\{x \in \mathbb{Z}/R\mathbb{Z} : \gcd(x.\text{val}, R) = 1\} = \varphi(R)$
+6. `coprime_zmod_card`: $\operatorname{card}\{x \in \mathbb{Z}/R\mathbb{Z} : \gcd(x.\text{val}, R) = 1\} = \varphi(R)$
 7. `affine_coprime_count`: Affine unit permutation invariance `affinePermutation8` over $\mathbb{Z}/R\mathbb{Z}$
 8. `progression_modEq`: Congruence preservation $(r + m k) \equiv a \pmod m$
 9. `progression_bounded`: Period bound $k < R \implies r + m k < T_{\min}$

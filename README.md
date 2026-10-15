@@ -35,7 +35,7 @@ Through a landmark collaborative formalization led by **Dan Hawkley ([@thinkthou
 | `GeneralDivisorTheorem.specialization_unitary` | Theorem 1' ($R = \mathrm{rad}(N/m),\ T_{\min} = m \cdot \mathrm{rad}(N/m)$) | Kernel-checked (`0 sorry`) |
 | `GeneralDivisorTheorem.specialization_primorial` | Theorem 1 ($d = m,\ R = N/m,\ T_{\min} = N$) | Kernel-checked (`0 sorry`) |
 | `GeneralDivisorTheorem.VolkanBridge.*` (10 theorems) | Two-way isomorphism (`bridge_rad_eq`, `bridge_d_eq`, `bridge_R_eq`, `bridge_Tmin_eq`, `bridge_C_eq`, §3.3 benchmarks) | Kernel-checked (`0 sorry`) |
-| `GeneralDivisorTheorem.gdt_count_per_period` ([`DensityBridge.lean`](DensityBridge.lean)) | $\#\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$ via affine unit permutation over $\mathbb{Z}/R\mathbb{Z}$ | Kernel-checked (`0 sorry`) |
+| `GeneralDivisorTheorem.gdt_count_per_period` ([`DensityBridge.lean`](DensityBridge.lean)) | $\operatorname{card}\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$ via affine unit permutation over $\mathbb{Z}/R\mathbb{Z}$ | Kernel-checked (`0 sorry`) |
 
 **Verification results ([Full Audit Certificate](docs/KERNEL_VERIFICATION_AUDIT_CERTIFICATE.md) • [Contributors](CONTRIBUTORS.md))**
 
@@ -160,7 +160,7 @@ theorem instance_m30_C : C_factor 30 = 15 / 4 := by unfold C_factor; norm_num
 Per Dan Hawkley's ([@thinkthoughts](https://github.com/thinkthoughts) / [@Precedent_Vice](https://x.com/Precedent_Vice)) architectural roadmap:
 - **[`VolkanBridge.lean`](VolkanBridge.lean) (10 Kernel-Checked Theorems):** Establishes a two-way cross-validation bridge between Volkan's functional API (`rad`, `d_param`, `R_param`, `T_min`, `C_factor`, `S_indicator`) and Dan's prime-support reading-point specification (`radN`, `d`, `R`, `Tmin`, `correctionFactor`, `Good`). See [`docs/VOLKAN_BRIDGE_SPEC.md`](docs/VOLKAN_BRIDGE_SPEC.md).
 - **[`DensityBridge.lean`](DensityBridge.lean) (13 Kernel-Checked Theorems):** Proves `GeneralDivisorTheorem.gdt_count_per_period`:
-  $$\#\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$$
+  $$\operatorname{card}\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$$
   by factoring the coprimality predicate along the arithmetic progression $r + m k$, proving $\gcd(m, R) = 1$ (`coprime_m_R`), and constructing the affine unit permutation `affinePermutation8` over `ZMod R`.
 - **Full Audit Certificate:** See [`docs/KERNEL_VERIFICATION_AUDIT_CERTIFICATE.md`](docs/KERNEL_VERIFICATION_AUDIT_CERTIFICATE.md) and [`CONTRIBUTORS.md`](CONTRIBUTORS.md).
 
