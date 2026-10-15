@@ -16,7 +16,7 @@ We gratefully acknowledge the mathematicians, formal verification architects, an
   * Discharged **all 8 original axioms** in [`GeneralDivisorTheorem.lean`](GeneralDivisorTheorem.lean) (`T_min_eq_lcm`, `exponent_blindness`, `C_factor_prime_product`, `specialization_divides`, `specialization_unitary`, `specialization_primorial`, `inadmissible_branch_empty`, `admissible_periodicity`) into **16 kernel-checked theorems and lemmas** with **0 custom axioms** and **0 `sorry`**.
   * Discharged **all 7 bridge obligations** in [`VolkanBridge.lean`](VolkanBridge.lean) into **10 kernel-checked theorems and lemmas** (`0 axioms`, `0 sorry`).
   * Authored [`DensityBridge.lean`](DensityBridge.lean) (**13 kernel-checked theorems and lemmas**, `0 axioms`, `0 sorry`), constructively proving the exact per-period count `gdt_count_per_period`:
-    $$\operatorname{card}\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$$
+    $$\mathrm{card}\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$$
     via affine unit permutations (`affinePermutation8`) over `ZMod R`.
 
 * **Zerrin Dağlı** — *Co-Author & Formal Verification Researcher*  
