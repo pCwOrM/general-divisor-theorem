@@ -19,6 +19,29 @@
 
 Machine-certified formalization of the **General Divisor Theorem (GDT)**: exact density correction under residue conditioning, formalized in Lean 4.
 
+### Kernel-Verified Theorem Milestone — October 2026
+
+All five original axioms in `GeneralDivisorTheorem.lean` have been replaced by Lean 4 theorems:
+
+| Theorem | Verification |
+|---|---|
+| `T_min_eq_lcm` | Kernel-checked |
+| `exponent_blindness` | Kernel-checked |
+| `C_factor_prime_product` | Kernel-checked |
+| `specialization_unitary` | Kernel-checked |
+| `specialization_primorial` | Kernel-checked |
+
+**Verification results**
+
+- `lake build GeneralDivisorTheorem VolkanBridge` — PASS
+- Original project-defined axioms remaining in `GeneralDivisorTheorem.lean` — 0
+- `sorry` / `admit` occurrences — 0
+- Dependency audit — `propext`, `Classical.choice`, `Quot.sound` only, for all five theorems
+
+**Verified commit:** `9f1a744` on branch `gdt-kernel-bridge`.
+
+The results certify the exact formal statements under their specified hypotheses. The foundational axioms listed above are standard Lean dependencies, rather than additional GDT assumptions.
+
 Based on the monograph by **thinkthoughts** (Dan, [@Precedent_Vice](https://x.com/Precedent_Vice)):
 > *The General Divisor Theorem: Exact Density Correction under Residue Conditioning* (Draft v3.3)  
 > Paper: [https://antiviolence.ai/gdt.pdf](https://antiviolence.ai/gdt.pdf) (Permanent Mirror: [docs/gdt.pdf](docs/gdt.pdf))  
@@ -116,7 +139,8 @@ The core theorems and definitions are formalized in [`GeneralDivisorTheorem.lean
 ```lean
 -- Exact correction factor definition
 def C_factor (d : Nat) : Rat :=
-  (d : Rat) / (Nat.totient d : Rat)
+  if Nat.totient d = 0 then 0
+  else (d : Rat) / (Nat.totient d : Rat)
 
 -- Verified concrete instances
 theorem instance_m6_C  : C_factor 6 = 3 := by unfold C_factor; norm_num
@@ -146,10 +170,36 @@ python scripts/verify_bridge.py
 
 Build the Lean 4 package with Lake:
 ```bash
-lake build
+lake build GeneralDivisorTheorem VolkanBridge
 ```
 
----
+### Lean Kernel Dependency Audit
+
+The five formerly axiomatized theorems are independently auditable using Lean's `#print axioms` command.
+
+Create `GDT_AxiomAudit.lean`:
+
+```lean
+import GeneralDivisorTheorem
+
+#print axioms GeneralDivisorTheorem.T_min_eq_lcm
+#print axioms GeneralDivisorTheorem.exponent_blindness
+#print axioms GeneralDivisorTheorem.C_factor_prime_product
+#print axioms GeneralDivisorTheorem.specialization_unitary
+#print axioms GeneralDivisorTheorem.specialization_primorial
+```
+
+Run:
+
+```bash
+lake env lean GDT_AxiomAudit.lean
+```
+
+All five theorems report exactly:
+
+`[propext, Classical.choice, Quot.sound]`
+
+These are Lean's standard classical foundations. No additional project-specific axioms are required for these five results.
 
 ## 5. Citation & Attribution
 
