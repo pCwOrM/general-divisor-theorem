@@ -396,6 +396,50 @@ theorem T_min_eq_lcm (N m : Nat) (hN : N > 0) (hm : m > 0) :
   unfold d_param
   exact period_eq_lcm N m hN hm
 
+
+/-- The unshared radical R is coprime to the modulus m. -/
+theorem coprime_m_R (N m : Nat)
+    (hN : 0 < N) (hm : 0 < m) :
+    Nat.Coprime m (R_param N m) := by
+  have hsq : Squarefree (rad N) :=
+    rad_squarefree N hN
+  have hm0 : m ≠ 0 := Nat.ne_of_gt hm
+  have hg : Nat.gcd (rad N) m = d_param N m := by
+    rw [Nat.gcd_comm]
+    exact gcd_rad_eq N m hN hm
+  have hd0 : d_param N m ≠ 0 := by
+    rw [← hg]
+    exact Nat.gcd_ne_zero_right hm0
+  have hR :
+      R_param N m = rad N / Nat.gcd (rad N) m := by
+    unfold R_param
+    rw [if_neg hd0, ← hg]
+  rw [hR, Nat.coprime_comm]
+  exact Nat.coprime_div_gcd_of_squarefree hsq hm0
+
+
+/-- The residual radical is positive for positive N and m. -/
+theorem R_param_pos (N m : Nat)
+    (hN : 0 < N) (hm : 0 < m) :
+    0 < R_param N m := by
+  have hrad : 0 < rad N := by
+    unfold rad
+    have hN0 : N ≠ 0 := Nat.ne_of_gt hN
+    simp only [if_neg hN0]
+    exact Finset.prod_pos fun p hp =>
+      (Nat.prime_of_mem_primeFactors hp).pos
+  have hT : T_min N m = Nat.lcm m (rad N) :=
+    T_min_eq_lcm N m hN hm
+  have hlcm : 0 < Nat.lcm m (rad N) :=
+    Nat.lcm_pos hm hrad
+  have hmul : 0 < m * R_param N m := by
+    change 0 < T_min N m
+    rw [hT]
+    exact hlcm
+  rcases (mul_pos_iff.mp hmul) with h | h
+  · exact h.2
+  · omega
+
 /-!
 # Section 3: Exponent-Blindness and Product Representation
 -/
