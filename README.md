@@ -55,8 +55,8 @@ No `sorryAx` or project-defined mathematical axiom appears in those dependency r
 Let \(N,m \in \mathbb N^+\) and \(a \in \mathbb Z\). Define
 
 \[
-d=\operatorname{rad}(\gcd(m,N)),\qquad
-R=\frac{\operatorname{rad}(N)}{d},\qquad
+d=\mathrm{rad}(\gcd(m,N)),\qquad
+R=\frac{\mathrm{rad}(N)}{d},\qquad
 T_{\min}=mR.
 \]
 
@@ -95,7 +95,7 @@ If
 the development proves periodicity with
 
 \[
-T_{\min}=mR=\operatorname{lcm}(m,\operatorname{rad}(N)),
+T_{\min}=mR=\mathrm{lcm}(m,\mathrm{rad}(N)),
 \]
 
 together with exactly
@@ -119,7 +119,7 @@ theorem gdt_count_per_period ...
 with conclusion
 
 \[
-\operatorname{countOnePeriod}(N,m,a)=\varphi(R).
+\mathrm{countOnePeriod}(N,m,a)=\varphi(R).
 \]
 
 `DensityCount.lean` lifts that result to arbitrary bounds. For every `q s : Nat`,
