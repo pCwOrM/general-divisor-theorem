@@ -1,70 +1,109 @@
-# Lean 4 Kernel Verification Audit Certificate (v2.0 — Zero Axioms, Zero `sorry`)
+# Lean 4 Kernel Verification Audit Certificate (v3.0 — 81 Theorems, Zero Axioms, Zero `sorry`)
 
-**Repository:** [`pCwOrM/general-divisor-theorem`](https://github.com/pCwOrM/general-divisor-theorem)
-**Milestone Pull Request:** [PR #1 (`Prove exact GDT count per admissible period in Lean 4`)](https://github.com/pCwOrM/general-divisor-theorem/pull/1) by **Dan Hawkley ([@thinkthoughts](https://github.com/thinkthoughts))**
-**Merge Commit:** `a5ef2b66871a62ec6c465ed06101ecd827135f88` (Head: `ac6586c`)
-**Toolchain:** `leanprover/lean4:v4.21.0` + `mathlib4:v4.21.0`
-**Audit Status:** **100% KERNEL-VERIFIED (`39 Theorems & Lemmas`, `0 Project Axioms`, `0 sorry`)**
+**Repository:** [`pCwOrM/general-divisor-theorem`](https://github.com/pCwOrM/general-divisor-theorem)  
+**Milestone Pull Requests:**
+- [PR #1 (`Prove exact GDT count per admissible period in Lean 4`)](https://github.com/pCwOrM/general-divisor-theorem/pull/1) by **Dan Hawkley ([@thinkthoughts](https://github.com/thinkthoughts))**
+- [PR #2 (`Complete GDT density, correction, and unified Lean proof`)](https://github.com/pCwOrM/general-divisor-theorem/pull/2) by **Dan Hawkley ([@thinkthoughts](https://github.com/thinkthoughts))**
+
+**Merge Commits:** `a5ef2b6` (PR #1) & `f97b6c2` (PR #2)  
+**Toolchain:** `leanprover/lean4:v4.21.0` + `mathlib4:v4.21.0`  
+**Audit Status:** **100% KERNEL-VERIFIED (`81 Theorems & Lemmas`, `0 Project Axioms`, `0 sorry`, `0 native_decide`)**
 
 ---
 
 ## 1. Executive Summary
 
-Following the integration of [PR #1](https://github.com/pCwOrM/general-divisor-theorem/pull/1) by **Dan Hawkley (`@thinkthoughts`)**, every theorem, specialization, two-way bridge isomorphism, and full-period progression count in the General Divisor Theorem (GDT) formalization is constructively proved and checked by the Lean 4 kernel without a single custom `axiom` or `sorry` placeholder.
+Following the integration of [PR #1](https://github.com/pCwOrM/general-divisor-theorem/pull/1) and [PR #2](https://github.com/pCwOrM/general-divisor-theorem/pull/2) by **Dan Hawkley (`@thinkthoughts` / `@Precedent_Vice`)**, every theorem, specialization, two-way bridge isomorphism, full-period progression count, arbitrary-bound count, natural density limit, and Euler correction factor in the General Divisor Theorem (GDT) formalization is constructively proved and checked by the Lean 4 kernel without a single custom `axiom`, `sorry` placeholder, or `native_decide` dependency.
 
 | Module | Kernel-Checked Declarations | Custom `axiom` Count | `sorry` / `admit` Count | Standard Foundations (`#print axioms`) |
 | :--- | :---: | :---: | :---: | :--- |
-| [`GeneralDivisorTheorem.lean`](../GeneralDivisorTheorem.lean) | **16** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
+| [`GeneralDivisorTheorem.lean`](../GeneralDivisorTheorem.lean) | **39** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
 | [`VolkanBridge.lean`](../VolkanBridge.lean) | **10** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
-| [`DensityBridge.lean`](../DensityBridge.lean) | **13** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
-| **Total Across Repository** | **39** | **`0`** | **`0`** | **Standard Classical Lean 4 Only** |
+| [`DensityBridge.lean`](../DensityBridge.lean) | **14** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
+| [`DensityCount.lean`](../DensityCount.lean) | **7** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
+| [`DensityLimit.lean`](../DensityLimit.lean) | **6** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
+| [`CorrectionBridge.lean`](../CorrectionBridge.lean) | **2** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
+| [`GDTMain.lean`](../GDTMain.lean) | **3** | `0` | `0` | `[propext, Classical.choice, Quot.sound]` |
+| **Total Across Repository** | **81** | **`0`** | **`0`** | **Standard Classical Lean 4 Only** |
 
 ---
 
 ## 2. Module-by-Module Kernel Inventory
 
-### 2.1 [`GeneralDivisorTheorem.lean`](../GeneralDivisorTheorem.lean) (16 Theorems & Lemmas)
-1. `instance_m6_C`: $C(6) = 3$
-2. `instance_m10_C`: $C(10) = 5/2$
-3. `instance_m30_C`: $C(30) = 15/4$
-4. `rad_eq_prod_primeFactors`: Equivalence of list-fold radical `rad` and `n.primeFactors.prod id`
-5. `T_min_eq_lcm`: $T_{\min}(N, m) = \mathrm{lcm}(m, \mathrm{rad}(N))$
-6. `exponent_blindness`: $\gcd(n, N) = 1 \iff \gcd(n, \mathrm{rad}(N)) = 1$
-7. `C_factor_prime_product`: $C(d) = \prod_{p \mid d} \frac{p}{p - 1}$ for squarefree $d > 0$
-8. `inadmissible_branch_empty`: $\gcd(|a|, d) > 1 \implies \neg S_{\text{indicator}}(N, m, a, n)$
-9. `admissible_periodicity`: $S_{\text{indicator}}(N, m, a, n + T_{\min}) \iff S_{\text{indicator}}(N, m, a, n)$
-10. `specialization_divides`: Theorem 2 ($m \mid N \implies d = \mathrm{rad}(m)$)
-11. `rad_mul_of_coprime`:Multiplicativity of `rad` on coprime arguments
-12. `d_param_unitary`: $d = \mathrm{rad}(m)$ when $m \mid N$ and $\gcd(m, N/m) = 1$
-13. `specialization_unitary`: Theorem 1' ($R = \mathrm{rad}(N/m)$ and $T_{\min} = m \cdot \mathrm{rad}(N/m)$)
-14. `rad_eq_self_of_squarefree`: Squarefree invariance $\mathrm{rad}(n) = n$
-15. `squarefree_of_dvd_of_squarefree`: Divisor inheritance of squarefreeness
-16. `specialization_primorial`: Theorem 1 ($d = m,\ R = N/m,\ T_{\min} = N$)
+### 2.1 [`GeneralDivisorTheorem.lean`](../GeneralDivisorTheorem.lean) (39 Theorems & Lemmas)
+Foundational arithmetic, radical algebra, coprime decompositions, and specializations (Theorems 1, 1', and 2) establishing:
+- Radicals and prime factor products: `rad_eq_prod_primeFactors`, `rad_mul_of_coprime`, `rad_eq_self_of_squarefree`
+- Minimal period: `T_min_eq_lcm` ($T_{\min}(N, m) = \mathrm{lcm}(m, \mathrm{rad}(N))$)
+- Exponent blindness: `exponent_blindness` ($\gcd(n, N) = 1 \iff \gcd(n, \mathrm{rad}(N)) = 1$)
+- Euler correction factor: `C_factor_prime_product` ($C(d) = \prod_{p \mid d} \frac{p}{p - 1}$)
+- Admissibility dichotomy & periodicity: `inadmissible_branch_empty`, `admissible_periodicity`
+- Specializations: `specialization_divides` (Theorem 2), `specialization_unitary` (Theorem 1'), `specialization_primorial` (Theorem 1)
 
 ### 2.2 [`VolkanBridge.lean`](../VolkanBridge.lean) (10 Theorems & Lemmas)
-1. `bridge_rad_eq`: `rad n = dan_radN n`
-2. `bridge_d_eq`: `d_param N m = dan_d N m`
-3. `bridge_R_eq`: `R_param N m = dan_R N m`
-4. `bridge_Tmin_eq`: `T_min N m = dan_Tmin N m`
-5. `bridge_C_eq`: `C_factor d = dan_correctionFactor d`
-6. `bridge_indicator_eq`: `S_indicator N m a n ↔ dan_Good N m a n`
-7. `bridge_inadmissible_empty`: Two-way inadmissible branch discharge
-8. `bridge_admissible_periodic`: Two-way minimal periodicity discharge
-9. `benchmark_3_3_i_Tmin_lt_N`: Distinguishing benchmark $N=18, m=2 \implies T_{\min} = 6 < 18$
-10. `benchmark_3_3_ii_sharp_admissibility`: Sharp admissibility $N=5, m=6, a=2 \implies d=1,\ \text{Admissible},\ C(d)=1$
+Two-way isomorphism bridging Volkan's functional API with Dan's prime-support specification:
+- `bridge_rad_eq`, `bridge_d_eq`, `bridge_R_eq`, `bridge_Tmin_eq`, `bridge_C_eq`, `bridge_indicator_eq`
+- Distinguishing benchmark §3.3(i): `benchmark_3_3_i_Tmin_lt_N` ($N=18, m=2 \implies T_{\min} = 6 < 18$)
+- Sharp admissibility §3.3(ii): `benchmark_3_3_ii_sharp_admissibility` ($N=5, m=6, a=2 \implies d=1, C(d)=1$)
 
-### 2.3 [`DensityBridge.lean`](../DensityBridge.lean) (13 Theorems & Lemmas)
-1. `indicator_factorization`: Under $n \equiv a \pmod m$ and $\gcd(|a|, d) = 1$, $\gcd(n, N) = 1 \iff \gcd(n, R) = 1$
-2. `residue3_eq_mod`: Canonical progression offset $r = \mathrm{toNat}(a \bmod m) = n \bmod m$
-3. `progression_surjective`: Bijection between $[0, T_{\min})$ congruence solutions and $r + m k$ for $0 \le k < R$
-4. `R_param_pos`: Strict positivity $0 < R(N, m)$
-5. `coprime_m_R`: Disjoint prime support coprimality $\gcd(m, R) = 1$
-6. `coprime_zmod_card`: $\mathrm{card}\{x \in \mathbb{Z}/R\mathbb{Z} : \gcd(x.\text{val}, R) = 1\} = \varphi(R)$
-7. `affine_coprime_count`: Affine unit permutation invariance `affinePermutation8` over $\mathbb{Z}/R\mathbb{Z}$
-8. `progression_modEq`: Congruence preservation $(r + m k) \equiv a \pmod m$
-9. `progression_bounded`: Period bound $k < R \implies r + m k < T_{\min}$
-10. `progression_indicator_iff`: Reduction of `S_indicator` along the progression to `Nat.Coprime (r + m * k) R`
-11. `progression_div`: Exact index recovery $(r + m k) / m = k$
-12. `countOnePeriod_eq_progression`: Cardinality bijection `countOnePeriod N m a` to progression coprime filter
-13. `coprime_mod_iff` & `progression_totient` & `gdt_count_per_period`:
-    $$\text{countOnePeriod}(N, m, a) = \varphi(R(N, m))$$
+### 2.3 [`DensityBridge.lean`](../DensityBridge.lean) (14 Theorems & Lemmas)
+Constructive full-period progression counting via affine unit permutations (`affinePermutation8`) over $\mathbb{Z}/R\mathbb{Z}$:
+- Disjoint support coprimality: `coprime_m_R` ($\gcd(m, R) = 1$)
+- Canonical residue and progression bijection: `residue3_eq_mod`, `progression_surjective`, `progression_modEq`, `progression_bounded`
+- Exact single-period count:
+  $$\mathrm{card}\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$$
+  (`countOnePeriod_eq_progression`, `gdt_count_per_period`)
+
+### 2.4 [`DensityCount.lean`](../DensityCount.lean) (7 Theorems & Lemmas)
+Arbitrary-bound solution counting via period block decomposition:
+- Multi-period shifts: `S_indicator_add_mul_T_min`, `countBelow_T_min_eq_countOnePeriod`
+- Period block invariance: `countBlock_eq_countOnePeriod`, `countBelow_mul_T_min`
+- Master arbitrary-bound counting formula:
+  $$C(q T_{\min} + s) = q \varphi(R) + C(s)$$
+  (`countBelow_mul_T_min_add`)
+
+### 2.5 [`DensityLimit.lean`](../DensityLimit.lean) (6 Theorems & Lemmas)
+Asymptotic natural density limit on the real line:
+- Bound bounds and Euclidean division: `countBelow_le`, `div_mul_T_min_add_mod`, `countBelow_div_mod`
+- Finite-period error bound:
+  $$|T_{\min} C(X) - \varphi(R) X| \le T_{\min}^2$$
+  (`density_error_bound`)
+- Natural density convergence:
+  $$\delta(S) = \lim_{X \to \infty} \frac{C(X)}{X} = \frac{\varphi(R)}{T_{\min}} = \frac{\varphi(R)}{mR}$$
+  (`density_limit`) proved via squeeze theorem (`squeeze_zero'`).
+
+### 2.6 [`CorrectionBridge.lean`](../CorrectionBridge.lean) (2 Theorems & Lemmas)
+Totient radical multiplicativity and the Euler density correction factor identity:
+- `totient_rad_eq_d_mul_R`: $\varphi(\mathrm{rad}(N)) = \varphi(d) \varphi(R)$
+- `gdt_correction_identity`:
+  $$\varphi(R) \cdot N \cdot \varphi(d) = d \cdot R \cdot \varphi(N)$$
+  establishing the exact link between natural density $\frac{\varphi(R)}{mR}$ and the correction factor $C(d) = \frac{d}{\varphi(d)}$.
+
+### 2.7 [`GDTMain.lean`](../GDTMain.lean) (3 Theorems & Lemmas)
+Unified packaging resolving the complete GDT dichotomy:
+- Strict positivity: `d_param_pos`
+- Admissibility dichotomy: `admissible_or_inadmissible`
+- Master Unified Theorem: `general_divisor_theorem`
+  $$\gcd(|a|, d) > 1 \implies S(N, m, a) = \emptyset \quad \lor \quad \left( \gcd(|a|, d) = 1 \implies S \text{ is } T_{\min}\text{-periodic with density } \frac{\varphi(R)}{mR} \right)$$
+
+---
+
+## 3. Kernel Axiom Verification Log
+
+Running `lake env lean Audit.lean` verifies:
+```lean
+#print axioms GeneralDivisorTheorem.general_divisor_theorem
+-- 'GeneralDivisorTheorem.general_divisor_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+#print axioms GeneralDivisorTheorem.density_limit
+-- 'GeneralDivisorTheorem.density_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+#print axioms GeneralDivisorTheorem.gdt_correction_identity
+-- 'GeneralDivisorTheorem.gdt_correction_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+#print axioms GeneralDivisorTheorem.gdt_count_per_period
+-- 'GeneralDivisorTheorem.gdt_count_per_period' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+#print axioms GeneralDivisorTheorem.coprime_m_R
+-- 'GeneralDivisorTheorem.coprime_m_R' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+No project-specific axioms. No `sorry`. No `native_decide`. Complete mathematical certainty.
