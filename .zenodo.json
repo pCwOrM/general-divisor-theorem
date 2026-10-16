@@ -1,15 +1,11 @@
 {
   "title": "Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Unified Density, Arbitrary-Bound Counting, and Finite Error Bounds",
-  "description": "Exhaustive machine-checked Lean 4 formalization of the General Divisor Theorem (GDT) across 7 production modules (81 kernel-checked theorems and lemmas, 0 custom axioms, 0 sorry, 0 native_decide). Proves the exact arithmetic dichotomy (inadmissible empty branch for gcd(|a|, d) > 1 vs admissible periodic branch for gcd(|a|, d) = 1), minimal period T_min = lcm(m, rad(N)), exact single-period count #{0 <= n < T_min : n === a (mod m), gcd(n, N) = 1} = phi(R) via affine units over ZMod R, closed-form arbitrary-bound counting C(q*T_min + s) = q*phi(R) + C(s) in O(1) arithmetic steps, finite error bound |T_min C(X) - phi(R)X| <= T_min^2, and natural density convergence delta(S) = phi(R)/(mR) via real squeeze theorem. Includes two-way cross-validation bridges and 2,287 automated Python verification sweeps with a 100% pass rate.",
+  "description": "Exhaustive machine-checked Lean 4 formalization of the General Divisor Theorem (GDT) across 7 production modules (81 kernel-checked theorems and lemmas, 0 custom axioms, 0 sorry, 0 native_decide). Proves the exact arithmetic dichotomy (inadmissible empty branch for gcd(|a|, d) > 1 vs admissible periodic branch for gcd(|a|, d) = 1), minimal period T_min = lcm(m, rad(N)), exact single-period count #{0 <= n < T_min : n === a (mod m), gcd(n, N) = 1} = phi(R) via affine units over ZMod R, closed-form arbitrary-bound counting C(q*T_min + s) = q*phi(R) + C(s) in O(1) arithmetic steps, finite error bound |T_min C(X) - phi(R)X| <= T_min^2, and natural density convergence delta(S) = phi(R)/(mR) via real squeeze theorem. Includes two-way cross-validation bridges and 2,287 automated Python verification sweeps with a 100% pass rate. Formulated originally as an analytic framework by Dan Hawkley (thinkthoughts), who authored milestone Pull Requests #1 and #2 in this repository.",
   "creators": [
     {
       "name": "Dağlı, Volkan",
       "affiliation": "Anadolu University, Eskişehir, Türkiye & ITouch Systems, Adana, Türkiye",
       "orcid": "0009-0000-1587-8703"
-    },
-    {
-      "name": "Hawkley, Dan",
-      "affiliation": "antiviolence.ai (@thinkthoughts / @Precedent_Vice), Independent Researcher"
     },
     {
       "name": "Dağlı, Zerrin",
@@ -23,6 +19,11 @@
     }
   ],
   "contributors": [
+    {
+      "name": "Hawkley, Dan",
+      "affiliation": "antiviolence.ai (@thinkthoughts / @Precedent_Vice), Independent Researcher",
+      "type": "Researcher"
+    },
     {
       "name": "Dağlı, Bekirhan",
       "affiliation": "ITouch Systems, Adana, Türkiye",
