@@ -19,6 +19,17 @@ We gratefully acknowledge the mathematicians, formal verification architects, an
     $$\mathrm{card}\{0 \le n < T_{\min} : n \equiv a \pmod{m},\ \gcd(n, N) = 1\} = \varphi(R)$$
     via affine unit permutations (`affinePermutation8`) over `ZMod R`.
 
+  **Landmark Contribution ([PR #2](https://github.com/pCwOrM/general-divisor-theorem/pull/2)):**
+  * Authored [`DensityCount.lean`](DensityCount.lean) (**7 kernel-checked theorems and lemmas**), proving exact arbitrary-bound counting:
+    $$C(q T_{\min} + s) = q \varphi(R) + C(s)$$
+  * Authored [`DensityLimit.lean`](DensityLimit.lean) (**6 kernel-checked theorems and lemmas**), proving natural density convergence:
+    $$\delta(S) = \lim_{X \to \infty} \frac{C(X)}{X} = \frac{\varphi(R)}{T_{\min}} = \frac{\varphi(R)}{mR}$$
+    with $O(T_{\min}^2)$ bounded error and real squeeze proofs (`squeeze_zero'`).
+  * Authored [`CorrectionBridge.lean`](CorrectionBridge.lean) (**2 kernel-checked theorems and lemmas**), establishing the Euler density correction factor identity:
+    $$\varphi(R) \cdot N \cdot \varphi(d) = d \cdot R \cdot \varphi(N)$$
+  * Authored [`GDTMain.lean`](GDTMain.lean) (**3 kernel-checked theorems and lemmas**), unifying admissible and inadmissible branches into an exact theorem packaging.
+  * Repository hardening: removal of `native_decide`, elimination of build cache artifacts, achieving a total of **81 kernel-verified theorems and lemmas** with 0 custom axioms and 0 `sorry`.
+
 * **Zerrin Dağlı** — *Co-Author & Formal Verification Researcher*
   Mersin University & Yusuf Kalkavan Anadolu Lisesi • ORCID: [`0000-0001-9490-6425`](https://orcid.org/0000-0001-9490-6425)
 
