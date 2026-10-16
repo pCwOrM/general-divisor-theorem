@@ -62,7 +62,7 @@ def R_param (N m : Nat) : Nat :=
   if d_param N m = 0 then 0
   else (rad N) / (d_param N m)
 
-private theorem rad_eq_d_mul_R (N m : Nat) :
+theorem rad_eq_d_mul_R (N m : Nat) :
     rad N = d_param N m * R_param N m := by
   by_cases hN : N = 0
   · subst N
@@ -416,6 +416,21 @@ theorem coprime_m_R (N m : Nat)
     rw [if_neg hd0, ← hg]
   rw [hR, Nat.coprime_comm]
   exact Nat.coprime_div_gcd_of_squarefree hsq hm0
+
+
+
+/-- The shared radical factor d is coprime to the unshared radical R. -/
+theorem coprime_d_R (N m : Nat)
+    (hN : 0 < N) (hm : 0 < m) :
+    Nat.Coprime (d_param N m) (R_param N m) := by
+  have hdg : d_param N m ∣ Nat.gcd m N := by
+    unfold d_param rad
+    split_ifs with h
+    · simp [h]
+    · exact Nat.prod_primeFactors_dvd _
+  have hdm : d_param N m ∣ m :=
+    dvd_trans hdg (Nat.gcd_dvd_left m N)
+  exact (coprime_m_R N m hN hm).of_dvd_left hdm
 
 
 /-- The residual radical is positive for positive N and m. -/

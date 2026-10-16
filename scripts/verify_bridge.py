@@ -119,7 +119,7 @@ def main():
 
     # 1. Distinguishing Benchmark Checks (§3.3)
     print("\n[Phase 1] §3.3 Distinguishing Benchmarks Verification:")
-    
+
     # Case 1: N=18, m=2, a=1
     v_d18, d_d18 = volkan_d(18, 2), dan_d(18, 2)
     v_R18, d_R18 = volkan_R(18, 2), dan_R(18, 2)
@@ -238,4 +238,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

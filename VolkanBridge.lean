@@ -217,7 +217,7 @@ theorem bridge_periodic (P : DanParams) (n : Nat) :
       exact False.elim (hempty n hgood)
 
 /-!
-# Section 4: Machine-Verified Distinguishing Benchmarks (0 sorry)
+# Section 4: Machine-Verified Distinguishing Benchmarks (kernel-checked)
 
 Both representations agree exactly on the distinguishing benchmark instances
 from §3.3 of `gdt.pdf`:
@@ -230,12 +230,37 @@ theorem benchmark_N18_m2_agreement :
     T_min 18 2 = 6 ∧
     DanRepresentation.Tmin P = 6 ∧
     C_factor (d_param 18 2) = 2 := by
+  let P : DanParams := ⟨18, 2, 1, by decide, by decide⟩
+
+  have hpf18 : Nat.primeFactors 18 = {2, 3} := by
+    change Nat.primeFactors (2 * 3^2) = {2, 3}
+    rw [Nat.primeFactors_mul]
+    · rw [Nat.primeFactors_pow]
+      · norm_num
+        decide
+      · decide
+    · decide
+    · decide
+
+  have hd : d_param 18 2 = 2 := by
+    norm_num [d_param, rad]
+
+  have hT : T_min 18 2 = 6 := by
+    norm_num [T_min, R_param, d_param, rad, hpf18]
+
+  have hDanT : DanRepresentation.Tmin P = 6 := by
+    rw [← T_min_agrees P]
+    exact hT
+
+  change T_min 18 2 = 6 ∧
+    DanRepresentation.Tmin P = 6 ∧
+    C_factor (d_param 18 2) = 2
+
   constructor
-  · native_decide
+  · exact hT
   constructor
-  · native_decide
-  · have hd : d_param 18 2 = 2 := by native_decide
-    rw [hd]
+  · exact hDanT
+  · rw [hd]
     have ht : Nat.totient 2 = 1 := by decide
     simp [C_factor, ht]
 
@@ -248,10 +273,39 @@ theorem benchmark_N5_m6_agreement :
     T_min 5 6 = 30 ∧
     DanRepresentation.Tmin P = 30 ∧
     C_factor (d_param 5 6) = 1 := by
-  have hd : d_param 5 6 = 1 := by native_decide
-  have ht : Nat.totient 1 = 1 := by decide
-  simp [hd, C_factor, ht]
-  native_decide
+  let P : DanParams := ⟨5, 6, 2, by decide, by decide⟩
+
+  have hd : d_param 5 6 = 1 := by
+    norm_num [d_param, rad]
+
+  have hDanD : DanRepresentation.d P = 1 := by
+    rw [← d_param_agrees P]
+    exact hd
+
+  have hT : T_min 5 6 = 30 := by
+    norm_num [T_min, R_param, d_param, rad]
+
+  have hDanT : DanRepresentation.Tmin P = 30 := by
+    rw [← T_min_agrees P]
+    exact hT
+
+  change d_param 5 6 = 1 ∧
+    DanRepresentation.d P = 1 ∧
+    T_min 5 6 = 30 ∧
+    DanRepresentation.Tmin P = 30 ∧
+    C_factor (d_param 5 6) = 1
+
+  constructor
+  · exact hd
+  constructor
+  · exact hDanD
+  constructor
+  · exact hT
+  constructor
+  · exact hDanT
+  · rw [hd]
+    have ht : Nat.totient 1 = 1 := by decide
+    simp [C_factor, ht]
 
 /-- Canonical Euler Density Correction Instances:
     C(6) = 3, C(10) = 2.5, C(30) = 3.75 -/

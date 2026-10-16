@@ -1,9 +1,9 @@
 # Lean 4 Kernel Verification Audit Certificate (v2.0 — Zero Axioms, Zero `sorry`)
 
-**Repository:** [`pCwOrM/general-divisor-theorem`](https://github.com/pCwOrM/general-divisor-theorem)  
-**Milestone Pull Request:** [PR #1 (`Prove exact GDT count per admissible period in Lean 4`)](https://github.com/pCwOrM/general-divisor-theorem/pull/1) by **Dan Hawkley ([@thinkthoughts](https://github.com/thinkthoughts))**  
-**Merge Commit:** `a5ef2b66871a62ec6c465ed06101ecd827135f88` (Head: `ac6586c`)  
-**Toolchain:** `leanprover/lean4:v4.21.0` + `mathlib4:v4.21.0`  
+**Repository:** [`pCwOrM/general-divisor-theorem`](https://github.com/pCwOrM/general-divisor-theorem)
+**Milestone Pull Request:** [PR #1 (`Prove exact GDT count per admissible period in Lean 4`)](https://github.com/pCwOrM/general-divisor-theorem/pull/1) by **Dan Hawkley ([@thinkthoughts](https://github.com/thinkthoughts))**
+**Merge Commit:** `a5ef2b66871a62ec6c465ed06101ecd827135f88` (Head: `ac6586c`)
+**Toolchain:** `leanprover/lean4:v4.21.0` + `mathlib4:v4.21.0`
 **Audit Status:** **100% KERNEL-VERIFIED (`39 Theorems & Lemmas`, `0 Project Axioms`, `0 sorry`)**
 
 ---

@@ -1,5 +1,5 @@
 name = "GeneralDivisorTheorem"
-defaultTargets = ["GeneralDivisorTheorem", "VolkanBridge", "DensityBridge"]
+defaultTargets = ["GDTMain", "VolkanBridge"]
 
 [[require]]
 name = "mathlib"
@@ -14,3 +14,15 @@ name = "VolkanBridge"
 
 [[lean_lib]]
 name = "DensityBridge"
+
+[[lean_lib]]
+name = "DensityCount"
+
+[[lean_lib]]
+name = "DensityLimit"
+
+[[lean_lib]]
+name = "CorrectionBridge"
+
+[[lean_lib]]
+name = "GDTMain"
