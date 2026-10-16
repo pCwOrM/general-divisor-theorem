@@ -348,7 +348,6 @@ Comments containing either word should not be confused with Lean declarations or
 #print axioms GeneralDivisorTheorem.gdt_correction_identity
 #print axioms GeneralDivisorTheorem.gdt_count_per_period
 #print axioms GeneralDivisorTheorem.coprime_m_R
-#print axioms GeneralDivisorTheorem.coprime_m_R_bridge
 ```
 
 Run:
