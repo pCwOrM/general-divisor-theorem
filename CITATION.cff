@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: "If you use this Lean 4 formalization of the General Divisor Theorem, please cite it using the metadata below."
-title: "Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Exact Density Correction under Residue Conditioning"
-version: "2.0.0"
-doi: "10.5281/zenodo.23316070"
-date-released: "2026-10-15"
+title: "Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Unified Density, Arbitrary-Bound Counting, and Finite Error Bounds"
+version: "3.0.0"
+doi: "10.5281/zenodo.23316068"
+date-released: "2026-10-16"
 license: "Apache-2.0"
 repository-code: "https://github.com/pCwOrM/general-divisor-theorem"
-url: "https://doi.org/10.5281/zenodo.23316070"
+url: "https://doi.org/10.5281/zenodo.23316068"
 authors:
   - family-names: "Dağlı"
     given-names: "Volkan"

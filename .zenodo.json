@@ -1,6 +1,6 @@
 {
-  "title": "Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Exact Density Correction under Residue Conditioning",
-  "description": "Standalone machine-checked Lean 4 formalization of the General Divisor Theorem (GDT) across GeneralDivisorTheorem.lean, VolkanBridge.lean, and DensityBridge.lean (39 kernel-checked theorems and lemmas, 0 custom axioms, 0 sorry). Proves exact minimal period T_min = lcm(m, rad(N)), sharp admissibility gcd(a, d) = 1, the Euler product correction factor C(N, m) = d / phi(d), and the exact per-period count #{0 <= n < T_min : n === a (mod m), gcd(n, N) = 1} = phi(R) via affine units over ZMod R. Includes exhaustive Python verification suites.",
+  "title": "Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Unified Density, Arbitrary-Bound Counting, and Finite Error Bounds",
+  "description": "Exhaustive machine-checked Lean 4 formalization of the General Divisor Theorem (GDT) across 7 production modules (81 kernel-checked theorems and lemmas, 0 custom axioms, 0 sorry, 0 native_decide). Proves the exact arithmetic dichotomy (inadmissible empty branch for gcd(|a|, d) > 1 vs admissible periodic branch for gcd(|a|, d) = 1), minimal period T_min = lcm(m, rad(N)), exact single-period count #{0 <= n < T_min : n === a (mod m), gcd(n, N) = 1} = phi(R) via affine units over ZMod R, closed-form arbitrary-bound counting C(q*T_min + s) = q*phi(R) + C(s) in O(1) arithmetic steps, finite error bound |T_min C(X) - phi(R)X| <= T_min^2, and natural density convergence delta(S) = phi(R)/(mR) via real squeeze theorem. Includes two-way cross-validation bridges and 2,287 automated Python verification sweeps with a 100% pass rate.",
   "creators": [
     {
       "name": "Dağlı, Volkan",
@@ -9,7 +9,7 @@
     },
     {
       "name": "Hawkley, Dan",
-      "affiliation": "Independent Researcher (@thinkthoughts / @Precedent_Vice, antiviolence.ai)"
+      "affiliation": "antiviolence.ai (@thinkthoughts / @Precedent_Vice), Independent Researcher"
     },
     {
       "name": "Dağlı, Zerrin",
@@ -53,6 +53,12 @@
     },
     {
       "identifier": "https://github.com/pCwOrM/general-divisor-theorem/pull/1",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/pCwOrM/general-divisor-theorem/pull/2",
       "relation": "isSupplementTo",
       "resource_type": "software",
       "scheme": "url"

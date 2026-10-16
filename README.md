@@ -1,7 +1,7 @@
 # General Divisor Theorem (GDT): Lean 4 Formalization
 
 [![Lean 4](https://img.shields.io/badge/Lean_4-v4.21.0-blue.svg)](https://github.com/leanprover/lean4)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23316070.svg)](https://doi.org/10.5281/zenodo.23316070)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23316068.svg)](https://doi.org/10.5281/zenodo.23316068)
 [![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
 [![Kernel Audit](https://img.shields.io/badge/Kernel_Audit-no_project_axioms-brightgreen.svg)](#kernel-dependency-audit)
 
@@ -17,7 +17,7 @@ The mathematical specification originates with **Dan Hawkley / thinkthoughts**
 > Local mirror: [`docs/gdt.pdf`](docs/gdt.pdf)  
 > Original challenge repository: [thinkthoughts/general-divisor-theorem](https://github.com/thinkthoughts/general-divisor-theorem)
 
-Zenodo archive: [10.5281/zenodo.23316070](https://doi.org/10.5281/zenodo.23316070)
+Zenodo archive: [10.5281/zenodo.23316068](https://doi.org/10.5281/zenodo.23316068) (Concept DOI — resolves to latest release)
 
 ---
 
