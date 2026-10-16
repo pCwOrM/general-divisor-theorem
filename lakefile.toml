@@ -1,5 +1,6 @@
+cat > lakefile.toml <<'EOF'
 name = "GeneralDivisorTheorem"
-defaultTargets = ["GeneralDivisorTheorem", "VolkanBridge"]
+defaultTargets = ["GDTMain", "VolkanBridge", "CoprimeBridge"]
 
 [[require]]
 name = "mathlib"
@@ -29,3 +30,4 @@ name = "GDTMain"
 
 [[lean_lib]]
 name = "CoprimeBridge"
+EOF
