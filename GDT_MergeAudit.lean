@@ -1,7 +1,0 @@
-import GeneralDivisorTheorem
-
-#print axioms GeneralDivisorTheorem.T_min_eq_lcm
-#print axioms GeneralDivisorTheorem.exponent_blindness
-#print axioms GeneralDivisorTheorem.C_factor_prime_product
-#print axioms GeneralDivisorTheorem.specialization_unitary
-#print axioms GeneralDivisorTheorem.specialization_primorial

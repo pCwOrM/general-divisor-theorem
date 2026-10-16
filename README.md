@@ -272,7 +272,7 @@ DensityLimit.lean
              │
              ├──────────────┐
              ▼              ▼
-CorrectionBridge.lean   CoprimeBridge.lean
+CorrectionBridge.lean
     │                       │
     └── correction identity └── compatibility bridge
              │
@@ -316,7 +316,6 @@ lake build DensityBridge
 lake build DensityCount
 lake build DensityLimit
 lake build CorrectionBridge
-lake build CoprimeBridge
 lake build GDTMain
 lake build VolkanBridge
 ```

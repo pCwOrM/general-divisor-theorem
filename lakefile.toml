@@ -1,5 +1,5 @@
 name = "GeneralDivisorTheorem"
-defaultTargets = ["GDTMain", "VolkanBridge", "CoprimeBridge"]
+defaultTargets = ["GDTMain", "VolkanBridge"]
 
 [[require]]
 name = "mathlib"
@@ -26,6 +26,3 @@ name = "CorrectionBridge"
 
 [[lean_lib]]
 name = "GDTMain"
-
-[[lean_lib]]
-name = "CoprimeBridge"
