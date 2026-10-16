@@ -1,91 +1,62 @@
-# General Divisor Theorem (GDT): Twitter Thread & Community Dissemination
+# General Divisor Theorem (GDT): Twitter / X Dissemination Strategy & Copy (v3.0)
 
-**Ana Başlık:** Machine-Certified Lean 4 Formalization of the General Divisor Theorem  
-**Resmi Zenodo DOI:** [`10.5281/zenodo.23316070`](https://doi.org/10.5281/zenodo.23316070)  
-**Tarih:** 12 Ekim 2026  
-**Yazarlar:** Volkan Dağlı, Zerrin Dağlı, Dağhan Dağlı  
-**Altyapı & Hesaplama:** Bekirhan Dağlı (ITouch Systems Research & Development)  
+**Target Release:** Release v3.0 (81 Theorems, 0 Sorry, 7 Modules)  
+**Zenodo Record DOI:** [`10.5281/zenodo.23425590`](https://doi.org/10.5281/zenodo.23425590)  
+**Concept DOI:** [`10.5281/zenodo.23316068`](https://doi.org/10.5281/zenodo.23316068)  
+**Collaborator Tag:** `@Precedent_Vice` (Dan Hawkley / thinkthoughts)  
+**Lean Community Tag:** `@leanprover`  
 
 ---
 
-## 1. 5 Tweetlik Resmi Tweetsel (Flood)
+## 1. Stratejik Dağıtım Kararı (Neden Hibrit Yaklaşım?)
+1. **Yeni Müstakil Tweet (Ana Akış / Full Feed Reach):**  
+   X/Twitter algoritması eski tweetlerin altına atılan yanıtları ana akışa (For You / Following) çıkarmaz. 81 teoremlik bu büyük atılımın hak ettiği küresel erişimi alması için **müstakil bir yeni tweet / thread** şarttır.
+2. **Mevcut Tweet Altına Güncelleme Yanıtı (Tarihsel Süreklilik):**  
+   Daha önceki tweet zincirinin altına atılacak 1 adet özet yanıt, ilk tartışmayı kaydeden araştırmacılar için zaferi tesciller.
 
-### Tweet 1 (Görsel Ekli — `gdt_twitter_infographic.png`):
+---
+
+## 2. Müstakil Yeni Thread (3 Tweet — 280 Karakter Sınırına Tam Uyumlu)
+
+### Tweet 1 (Ana Duyuru — Görsel Ekli: `gdt_twitter_infographic.png`):
 ```text
-We answered @Precedent_Vice's challenge: The General Divisor Theorem (GDT) by thinkthoughts is now machine-certified in a dedicated @leanprover repository!
+🚀 Milestone: General Divisor Theorem (GDT) Lean 4 formalization reaches Release v3.0!
 
-Exact period, count & Euler density correction formalized with 0 sorry:
-https://github.com/pCwOrM/general-divisor-theorem [1/5]
+With PR #1 & PR #2 merged by @Precedent_Vice, we have 81 kernel-checked theorems across 7 modules (0 axioms, 0 sorry).
+
+Minted on CERN Zenodo:
+https://zenodo.org/records/23425590 [1/3]
 ```
 
-### Tweet 2:
+### Tweet 2 (Teknik Başarılar & Kanıtlar):
 ```text
-Naive density heuristics fail when modulus m & constraint N share prime factors.
-
-GDT isolates the shared radical d = rad(gcd(m, N)) and unshared R = rad(N)/d:
-• Exact minimal period: T_min = lcm(m, rad(N))
-• Density correction: C(N, m) = d / φ(d)
-• Inadmissible branch: ∅ [2/5]
+What v3.0 formally proves in Lean 4:
+• Exact per-period count φ(R) via ZMod R units
+• Arbitrary-bound count in O(1) steps: C(q·T_min+s) = q·φ(R) + C(s)
+• Finite error bound: |T_min·C(X) - φ(R)·X| ≤ T_min²
+• Real natural density convergence via squeeze theorem (0 sorry) [2/3]
 ```
 
-### Tweet 3:
+### Tweet 3 (Açık Bilim & Linkler):
 ```text
-All canonical benchmarks from the paper machine-verified in Lean 4:
-• C(6) = 3 (correcting prior 24/25)
-• C(10) = 2.5, C(30) = 3.75
-• Distinguishing instances: N=18, m=2 -> T_min=6 (not 18!)
+100% verified against 2,287 automated test sweeps.
 
-Backed by an exhaustive test suite: 2,287 parameter checks PASS. [3/5]
-```
+📦 Zenodo DOI: 10.5281/zenodo.23425590
+📄 Paper Mirror: https://github.com/pCwOrM/general-divisor-theorem/blob/main/docs/gdt.pdf
+🐙 GitHub: https://github.com/pCwOrM/general-divisor-theorem
 
-### Tweet 4:
-```text
-This formalization seamlessly integrates exact residue periods with our ℤ/9ℤ modular harmonic synthesis in the Lean Workers Union lodge manifest.
-
-Open science, verified geometry, zero sorry.
-
-#Lean4 #FormalMath #NumberTheory #OpenScience #Mathlib @leanprover [4/5]
-```
-
-### Tweet 5 (Zenodo Kalıcı Tescil & Künye):
-```text
-Official preprint & package permanently registered on CERN Zenodo:
-📄 DOI: 10.5281/zenodo.23316070
-🔗 https://zenodo.org/records/23316070
-
-Authors: Volkan Dağlı, Zerrin Dağlı, Dağhan Dağlı
-Computing & Infrastructure: Bekirhan Dağlı (@ITouchSystems)
-License: Apache-2.0 / CC-BY-4.0 [5/5]
+#Lean4 #FormalMath #Mathlib @leanprover [3/3]
 ```
 
 ---
 
-## 2. Mike Dupont'a (@introsp3ctor) Yanıt Tweeti (WERR Külliyatı Jargonu)
+## 3. Mevcut Tweet Zincirinin Altına Atılacak Güncelleme Yanıtı (Reply)
 
-> **Hedef Tweet:** https://x.com/introsp3ctor/status/2109600907289837738  
-> **Karakter Sayısı:** 271 karakter (Twitter 280 sınırına tam uyumlu)
-
-```text
-Confirmed! Upstream @Precedent_Vice repo is the theoretical origin. Our pCwOrM/general-divisor-theorem is the downstream machine-proof implementing his spec in Lean 4 (0 sorry, Mathlib-native, 2,287 checks PASS). Minted on Zenodo: 10.5281/zenodo.23316070. PRs & reviews welcome!
-```
-
----
-
-## 3. Dan Hawkley'e (@Precedent_Vice) VolkanBridge Yanıt Tweeti
-
-> **Hedef Tweet:** https://x.com/Precedent_Vice/status/2109615980662202549  
-> **Karakter Sayısı:** 276 karakter (Twitter 280 sınırına tam uyumlu)
+> **Karakter Sayısı:** 261 / 280 (Twitter ağırlıklı limit kontrolü: PASS)
 
 ```text
-Brilliant synthesis, Dan! VolkanBridge.lean is now live in our repo: mapping rad, d, R, T_min, C & S_indicator to your prime-support spec, backed by 6,670 passing oracle checks. Two-way validation complete & minted on Zenodo: 10.5281/zenodo.23316070. Let's merge the bridge! 🌉🚀
+🚨 UPDATE (v3.0 Milestone): Following the merge of landmark PR #1 & PR #2 by @Precedent_Vice, GDT in Lean 4 is expanded to 81 theorems across 7 modules (0 sorry, O(1) counting & natural density limit).
+
+Officially minted on CERN Zenodo:
+🔗 https://zenodo.org/records/23425590
 ```
-
----
-
-## 4. Topluluk Kanalları Durumu (Community Telemetry)
-
-- **Zenodo DOI:** `10.5281/zenodo.23316070` (Canlı, DataCite tescilli)
-- **GitHub Reposu:** `https://github.com/pCwOrM/general-divisor-theorem` (v1.0.0 etiketli & VolkanBridge devrede)
-- **VolkanBridge Spec:** `docs/VOLKAN_BRIDGE_SPEC.md` (6,670/6,670 test %100 PASS)
-- **LeanProver Zulip:** `#Project announcements > [ANN] General Divisor Theorem (GDT) in Lean 4` (Message ID: 630948531)
-- **Solfunmeme Zulip (Lodge):** `#general > lean-workers-union` (Message ID: 630959234, Güncelleme ID: 630973516, VolkanBridge ID: 630979137)
