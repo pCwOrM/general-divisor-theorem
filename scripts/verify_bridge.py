@@ -4,7 +4,7 @@ Exhaustive Two-Way Bridge Verification: Volkan's Functional API vs Dan's Prime-S
 Connecting:
   - Volkan Dağlı: pCwOrM/general-divisor-theorem (GeneralDivisorTheorem.lean)
   - Dan Hawkley:  thinkthoughts/gap-lean4-port-gdt (gdt-readingpoint)
-  - Zenodo:       10.5281/zenodo.23316070
+  - Zenodo:       10.5281/zenodo.23425590 (Concept: 10.5281/zenodo.23316068)
 """
 
 import math

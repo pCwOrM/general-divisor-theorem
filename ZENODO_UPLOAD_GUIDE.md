@@ -1,10 +1,11 @@
 # Zenodo Publication Record: Machine-Certified Lean 4 Formalization of the General Divisor Theorem (GDT)
 
-> **DURUM: YAYINLANDI VE ULUSLARARASI TESCİL EDİLDİ (LIVE & VERIFIED)**  
-> **Kalıcı DOI:** [`10.5281/zenodo.23316070`](https://doi.org/10.5281/zenodo.23316070)  
-> **Zenodo Kayıt URL:** [https://zenodo.org/records/23316070](https://zenodo.org/records/23316070)  
+> **DURUM: SÜRÜM 3.0 YAYINLANDI VE ULUSLARARASI TESCİL EDİLDİ (LIVE & VERIFIED)**  
+> **Sürüm 3.0 Kalıcı DOI:** [`10.5281/zenodo.23425590`](https://doi.org/10.5281/zenodo.23425590)  
+> **Zenodo Kayıt URL:** [https://zenodo.org/records/23425590](https://zenodo.org/records/23425590)  
 > **Concept DOI:** [`10.5281/zenodo.23316068`](https://doi.org/10.5281/zenodo.23316068)  
-> **Yayın Tarihi:** 12 Ekim 2026  
+> **Önceki Sürüm:** [`10.5281/zenodo.23316070`](https://doi.org/10.5281/zenodo.23316070)  
+> **Yayın Tarihi:** 16 Ekim 2026 (v3.0.0) / 12 Ekim 2026 (v1.0.0)  
 > **Lisans:** Apache License 2.0 / CC-BY-4.0  
 
 Bu doküman, **General Divisor Theorem (GDT)** Lean 4 makine kanıtı ve monografisinin CERN Zenodo üzerindeki resmi kayıt ve üstveri dökümüdür.

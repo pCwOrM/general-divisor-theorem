@@ -17,7 +17,7 @@ The mathematical specification originates with **Dan Hawkley / thinkthoughts**
 > Local mirror: [`docs/gdt.pdf`](docs/gdt.pdf)  
 > Original challenge repository: [thinkthoughts/general-divisor-theorem](https://github.com/thinkthoughts/general-divisor-theorem)
 
-Zenodo archive: [10.5281/zenodo.23316068](https://doi.org/10.5281/zenodo.23316068) (Concept DOI — resolves to latest release)
+Zenodo archive: [10.5281/zenodo.23425590](https://doi.org/10.5281/zenodo.23425590) (Release v3.0 — Concept DOI: [10.5281/zenodo.23316068](https://doi.org/10.5281/zenodo.23316068))
 
 ---
 
@@ -384,12 +384,13 @@ These provide independent computational checks and are complementary to, rather 
 ```bibtex
 @misc{dagli2026gdt_lean4,
   author    = {Da\u{g}l\i, Volkan and Da\u{g}l\i, Zerrin and Da\u{g}l\i, Da\u{g}han},
-  title     = {Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Exact Density Correction under Residue Conditioning},
+  title     = {Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Unified Density, Arbitrary-Bound Counting, and Finite Error Bounds},
   year      = {2026},
   month     = {October},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.23316070},
-  url       = {https://doi.org/10.5281/zenodo.23316070}
+  version   = {3.0.0},
+  doi       = {10.5281/zenodo.23425590},
+  url       = {https://doi.org/10.5281/zenodo.23425590}
 }
 
 @misc{thinkthoughts2026gdt,

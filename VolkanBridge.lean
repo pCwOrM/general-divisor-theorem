@@ -10,7 +10,7 @@
        Exact Density Correction under Residue Conditioning", Draft v3.3 (2026).
     2. GitHub: thinkthoughts/gap-lean4-port-gdt (GDTReadingPoint).
     3. Standalone Formalization: pCwOrM/general-divisor-theorem.
-    4. Permanent Zenodo Archive: 10.5281/zenodo.23316070.
+    4. Permanent Zenodo Archive: 10.5281/zenodo.23425590 (Concept: 10.5281/zenodo.23316068).
 -/
 
 import Mathlib.Data.Nat.Basic
