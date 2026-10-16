@@ -1,0 +1,31 @@
+{"log":
+ [{"message":
+   ".> LEAN_PATH=/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/Cli/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/batteries/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/Qq/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/aesop/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/importGraph/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/plausible/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/mathlib/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/build/lib/lean /home/dan/.elan/toolchains/leanprover--lean4---v4.21.0/bin/lean /home/dan/pCwOrM-general-divisor-theorem/DensityCount.lean -R /home/dan/pCwOrM-general-divisor-theorem -o /home/dan/pCwOrM-general-divisor-theorem/.lake/build/lib/lean/DensityCount.olean -i /home/dan/pCwOrM-general-divisor-theorem/.lake/build/lib/lean/DensityCount.ilean -c /home/dan/pCwOrM-general-divisor-theorem/.lake/build/ir/DensityCount.c --json",
+   "level": "trace"},
+  {"message":
+   "DensityCount.lean:127:4: try 'simp' instead of 'simpa'\nnote: this linter can be disabled with `set_option linter.unnecessarySimpa false`",
+   "level": "warning"},
+  {"message":
+   "DensityCount.lean:200:4: try 'simp' instead of 'simpa'\nnote: this linter can be disabled with `set_option linter.unnecessarySimpa false`",
+   "level": "warning"}],
+ "inputs":
+ [["DensityCount:deps",
+   [["deps",
+     [["GeneralDivisorTheorem/DensityCount:extraDep",
+       [["@GeneralDivisorTheorem:extraDep", "1723"]]],
+      ["import oleans",
+       [["DensityBridge:olean",
+         [["DensityBridge:deps", "354561135785257677"],
+          ["/home/dan/pCwOrM-general-divisor-theorem/.lake/build/lib/lean/DensityBridge.olean",
+           "12388012381765789321"]]]]]]],
+    ["libs",
+     [["import dynlibs", "1723"],
+      ["package external libraries", "1723"],
+      ["module dynlibs", "1723"],
+      ["module plugins", "1723"]]]]],
+  ["Lean 4.21.0, commit 6741444a63eec253a7eae7a83f1beb3de015023d",
+   "11123825329739276520"],
+  ["Module.leanArgs: #[]", "1723"],
+  ["/home/dan/pCwOrM-general-divisor-theorem/DensityCount.lean",
+   "11225724855630415441"]],
+ "depHash": "8172151947731460557"}

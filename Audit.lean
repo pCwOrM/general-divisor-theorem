@@ -1,0 +1,10 @@
+import GDTMain
+import VolkanBridge
+import CoprimeBridge
+
+#print axioms GeneralDivisorTheorem.general_divisor_theorem
+#print axioms GeneralDivisorTheorem.density_limit
+#print axioms GeneralDivisorTheorem.gdt_correction_identity
+#print axioms GeneralDivisorTheorem.gdt_count_per_period
+#print axioms GeneralDivisorTheorem.coprime_m_R
+#print axioms GeneralDivisorTheorem.coprime_m_R_bridge

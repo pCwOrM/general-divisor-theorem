@@ -1,0 +1,34 @@
+{"log":
+ [{"message":
+   ".> LEAN_PATH=/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/Cli/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/batteries/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/Qq/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/aesop/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/importGraph/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/plausible/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/packages/mathlib/.lake/build/lib/lean:/home/dan/pCwOrM-general-divisor-theorem/.lake/build/lib/lean /home/dan/.elan/toolchains/leanprover--lean4---v4.21.0/bin/lean /home/dan/pCwOrM-general-divisor-theorem/DensityBridge.lean -R /home/dan/pCwOrM-general-divisor-theorem -o /home/dan/pCwOrM-general-divisor-theorem/.lake/build/lib/lean/DensityBridge.olean -i /home/dan/pCwOrM-general-divisor-theorem/.lake/build/lib/lean/DensityBridge.ilean -c /home/dan/pCwOrM-general-divisor-theorem/.lake/build/ir/DensityBridge.c --json",
+   "level": "trace"},
+  {"message":
+   "DensityBridge.lean:11:5: unused variable `hm`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"},
+  {"message":
+   "DensityBridge.lean:186:5: unused variable `hN`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"},
+  {"message":
+   "DensityBridge.lean:260:37: unused variable `hR`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"}],
+ "inputs":
+ [["DensityBridge:deps",
+   [["deps",
+     [["GeneralDivisorTheorem/DensityBridge:extraDep",
+       [["@GeneralDivisorTheorem:extraDep", "1723"]]],
+      ["import oleans",
+       [["GeneralDivisorTheorem:olean",
+         [["GeneralDivisorTheorem:deps", "9686751055325707143"],
+          ["/home/dan/pCwOrM-general-divisor-theorem/.lake/build/lib/lean/GeneralDivisorTheorem.olean",
+           "4230100518041288349"]]]]]]],
+    ["libs",
+     [["import dynlibs", "1723"],
+      ["package external libraries", "1723"],
+      ["module dynlibs", "1723"],
+      ["module plugins", "1723"]]]]],
+  ["Lean 4.21.0, commit 6741444a63eec253a7eae7a83f1beb3de015023d",
+   "11123825329739276520"],
+  ["Module.leanArgs: #[]", "1723"],
+  ["/home/dan/pCwOrM-general-divisor-theorem/DensityBridge.lean",
+   "14092168872074626952"]],
+ "depHash": "8979986617034756119"}

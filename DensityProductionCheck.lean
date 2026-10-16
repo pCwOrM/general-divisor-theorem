@@ -1,0 +1,4 @@
+import DensityBridge
+
+#check GeneralDivisorTheorem.gdt_count_per_period
+#print axioms GeneralDivisorTheorem.gdt_count_per_period

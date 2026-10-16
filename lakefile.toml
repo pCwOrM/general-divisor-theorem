@@ -11,3 +11,21 @@ name = "GeneralDivisorTheorem"
 
 [[lean_lib]]
 name = "VolkanBridge"
+
+[[lean_lib]]
+name = "DensityBridge"
+
+[[lean_lib]]
+name = "DensityCount"
+
+[[lean_lib]]
+name = "DensityLimit"
+
+[[lean_lib]]
+name = "CorrectionBridge"
+
+[[lean_lib]]
+name = "GDTMain"
+
+[[lean_lib]]
+name = "CoprimeBridge"

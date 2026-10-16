@@ -217,7 +217,7 @@ theorem bridge_periodic (P : DanParams) (n : Nat) :
       exact False.elim (hempty n hgood)
 
 /-!
-# Section 4: Machine-Verified Distinguishing Benchmarks (0 sorry)
+# Section 4: Machine-Verified Distinguishing Benchmarks (kernel-checked)
 
 Both representations agree exactly on the distinguishing benchmark instances
 from §3.3 of `gdt.pdf`:

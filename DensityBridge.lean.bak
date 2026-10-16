@@ -1,0 +1,18 @@
+import GeneralDivisorTheorem
+
+namespace GeneralDivisorTheorem
+
+/-- Number of admissible integers in the first proposed period. -/
+noncomputable def countOnePeriod (N m : Nat) (a : Int) : Nat := by
+  classical
+  exact ((Finset.range (T_min N m)).filter
+    (fun n => S_indicator N m a n)).card
+
+/-- Exact GDT count per period: target theorem. -/
+example (N m : Nat) (a : Int)
+    (hN : 0 < N) (hm : 0 < m)
+    (h_adm : Nat.gcd a.natAbs (d_param N m) = 1) :
+    countOnePeriod N m a = Nat.totient (R_param N m) := by
+  sorry
+
+end GeneralDivisorTheorem
