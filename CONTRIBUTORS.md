@@ -30,7 +30,7 @@ We gratefully acknowledge the mathematicians, formal verification architects, an
   * Authored [`GDTMain.lean`](GDTMain.lean) (**3 kernel-checked theorems and lemmas**), unifying admissible and inadmissible branches into an exact theorem packaging.
   * Repository hardening: removal of `native_decide`, elimination of build cache artifacts, achieving a total of **81 kernel-verified theorems and lemmas** with 0 custom axioms and 0 `sorry`.
 
-* **Zerrin Dağlı** — *Co-Author & Formal Verification Researcher*
+* **Dr. Zerrin Dağlı** — *Co-Author & Formal Verification Researcher*
   Mersin University & Yusuf Kalkavan Anadolu Lisesi • ORCID: [`0000-0001-9490-6425`](https://orcid.org/0000-0001-9490-6425)
 
 * **Dağhan Dağlı** — *Co-Author & Computational Verification Researcher*

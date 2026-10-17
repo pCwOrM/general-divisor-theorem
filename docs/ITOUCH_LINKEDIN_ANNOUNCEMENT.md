@@ -64,7 +64,7 @@ Through the milestone contributions of Dan Hawkley (thinkthoughts / antiviolence
 • Open Source Repository: https://github.com/pCwOrM/general-divisor-theorem
 • Monograph Mirror: https://github.com/pCwOrM/general-divisor-theorem/blob/main/docs/gdt.pdf
 
-Principal Authors: Volkan Dağlı (Anadolu Univ. & ITouch Systems), Zerrin Dağlı (Mersin Univ.), Dağhan Dağlı (Toros Science High School)
+Principal Authors: Volkan Dağlı (Anadolu Univ. & ITouch Systems), Dr. Zerrin Dağlı (Mersin Univ.), Dağhan Dağlı (Toros Science High School)
 Theoretical Originator & Landmark Contributor: Dan Hawkley (antiviolence.ai)
 Infrastructure & Computing Host: Bekirhan Dağlı (ITouch Systems R&D)
 
@@ -98,7 +98,7 @@ Teorinin fikir babası Dan Hawkley'in (thinkthoughts / antiviolence.ai) depomuza
 • Zenodo Yayını: https://zenodo.org/records/23425590
 • Açık Kaynak Depo: https://github.com/pCwOrM/general-divisor-theorem
 
-Yazarlar: Volkan Dağlı (Anadolu Üniv. & ITouch Systems), Zerrin Dağlı (Mersin Üniv.), Dağhan Dağlı (Toros Fen Lisesi)
+Yazarlar: Volkan Dağlı (Anadolu Üniv. & ITouch Systems), Dr. Zerrin Dağlı (Mersin Üniv.), Dağhan Dağlı (Toros Fen Lisesi)
 Teorik Fikir Babası & PR Katkıcısı: Dan Hawkley (antiviolence.ai)
 Altyapı & HPC Laboratuvarı: Bekirhan Dağlı (ITouch Systems R&D)
 
