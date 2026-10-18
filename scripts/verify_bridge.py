@@ -228,12 +228,43 @@ def main():
             )
             density_checks += 1
 
-    print(f"  ✓ Disjoint support coprimality `coprime_m_R` (gcd(m, R) = 1): {density_checks} pairs [PASS]")
-    print(f"  ✓ Exact period count `gdt_count_per_period` (#S_period = phi(R)): {total_period_solutions} periods [PASS]")
-    print(f"  ✓ Rational natural density identity delta(S) = phi(R)/(m*R) = (phi(rad(N))/(m*rad(N)))*C(d): {density_checks} pairs [PASS]")
+    # 4. DensityCount.lean (`gdt_count_arbitrary_bound` & Arbitrary Interval Count)
+    print("\n[Phase 4] DensityCount.lean (`gdt_count_arbitrary_bound` & Remainder Interval Counts):")
+    arbitrary_bound_checks = 0
+    for N in [6, 10, 14, 15, 30]:
+        for m in [2, 3, 5, 6]:
+            d = volkan_d(N, m)
+            R = volkan_R(N, m)
+            Tmin = volkan_Tmin(N, m)
+            if Tmin > 120:
+                continue
+            phiR = phi(R)
+            for a in range(m):
+                if not volkan_is_admissible(N, m, a):
+                    continue
+                # Test arbitrary boundaries X = q * Tmin + s
+                for q_mult in [0, 1, 2, 3]:
+                    for s_rem in [0, 1, Tmin // 3, Tmin // 2, Tmin - 1]:
+                        X = q_mult * Tmin + s_rem
+                        # Direct simulation count below X
+                        actual_count = sum(1 for n in range(X) if volkan_S_indicator(N, m, a, n))
+                        # Remainder simulation count below s
+                        rem_count = sum(1 for n in range(s_rem) if volkan_S_indicator(N, m, a, n))
+                        # Recurrence: count(q*T + s) == q * phi(R) + count(s)
+                        assert actual_count == q_mult * phiR + rem_count, (
+                            f"Arbitrary count recurrence failed at X={X}: {actual_count} != {q_mult * phiR + rem_count}"
+                        )
+                        # Sandwich bound: q * phi(R) <= count(X) <= (q + 1) * phi(R)
+                        assert q_mult * phiR <= actual_count <= (q_mult + 1) * phiR, (
+                            f"Sandwich bound failed at X={X}"
+                        )
+                        arbitrary_bound_checks += 1
+
+    print(f"  ✓ Arbitrary bound tests (`gdt_count_arbitrary_bound`): {arbitrary_bound_checks} intervals [PASS]")
+    print(f"  ✓ Exact quotient-remainder recurrence count(q*T + s) == q*phi(R) + count(s): 100% exact [PASS]")
 
     print("\n" + "=" * 70)
-    print("  TWO-WAY BRIDGE & DENSITY BRIDGE: 100% PASS (0 DEFECTS)")
+    print("  TWO-WAY BRIDGE, DENSITY BRIDGE & ARBITRARY BOUNDS: 100% PASS (0 DEFECTS)")
     print("=" * 70)
 
 if __name__ == "__main__":
