@@ -4,6 +4,11 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23316068.svg)](https://doi.org/10.5281/zenodo.23316068)
 [![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
 [![Kernel Audit](https://img.shields.io/badge/Kernel_Audit-no_project_axioms-brightgreen.svg)](#kernel-dependency-audit)
+[![Academic: werr.io](https://img.shields.io/badge/Academic%20Portal-werr.io-0284c7.svg?logo=cloudflare&logoColor=white)](https://werr.io/)
+[![Web3: werracle.io](https://img.shields.io/badge/Web3%20Protocol-werracle.io-f59e0b.svg?logo=cloudflare&logoColor=white)](https://werracle.io/)
+[![Corporate: werracle.com](https://img.shields.io/badge/Corporate%20Portal-werracle.com-2b3bd1.svg?logo=cloudflare&logoColor=white)](https://werracle.com/)
+[![Cloud Vault: R2 Active](https://img.shields.io/badge/Cloud%20Vault-Cloudflare%20R2%20Active-f38020.svg?logo=cloudflare&logoColor=white)](https://werracle.com/)
+[![Sister Repo: NSF ICARM 230 Curves](https://img.shields.io/badge/Sister%20Repo-NSF%20ICARM%20Elliptic%20Sieve%20(230%20Curves)-blue)](https://github.com/pCwOrM/werr-elliptic-sieve)
 
 ![General Divisor Theorem Lean 4 Infographic](gdt_twitter_infographic.png)
 
