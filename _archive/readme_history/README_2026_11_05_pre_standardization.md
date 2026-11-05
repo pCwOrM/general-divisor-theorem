@@ -1,0 +1,454 @@
+# General Divisor Theorem (GDT): Lean 4 Formalization
+
+[![Lean 4](https://img.shields.io/badge/Lean_4-v4.21.0-blue.svg)](https://github.com/leanprover/lean4)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23316068.svg)](https://doi.org/10.5281/zenodo.23316068)
+[![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
+[![Kernel Audit](https://img.shields.io/badge/Kernel_Audit-no_project_axioms-brightgreen.svg)](#kernel-dependency-audit)
+[![Academic: werr.io](https://img.shields.io/badge/Academic%20Portal-werr.io-0284c7.svg?logo=cloudflare&logoColor=white)](https://werr.io/)
+[![Web3: werracle.io](https://img.shields.io/badge/Web3%20Protocol-werracle.io-f59e0b.svg?logo=cloudflare&logoColor=white)](https://werracle.io/)
+[![Corporate: werracle.com](https://img.shields.io/badge/Corporate%20Portal-werracle.com-2b3bd1.svg?logo=cloudflare&logoColor=white)](https://werracle.com/)
+[![Cloud Vault: R2 Active](https://img.shields.io/badge/Cloud%20Vault-Cloudflare%20R2%20Active-f38020.svg?logo=cloudflare&logoColor=white)](https://werracle.com/)
+[![Sister Repo: NSF ICARM 230 Curves](https://img.shields.io/badge/Sister%20Repo-NSF%20ICARM%20Elliptic%20Sieve%20(230%20Curves)-blue)](https://github.com/pCwOrM/werr-elliptic-sieve)
+
+![General Divisor Theorem Lean 4 Infographic](gdt_twitter_infographic.png)
+
+Lean 4 formalization of the **General Divisor Theorem (GDT)**: exact density correction under residue conditioning.
+
+The mathematical specification originates with **Dan Hawkley / thinkthoughts**
+([@Precedent_Vice](https://x.com/Precedent_Vice)):
+
+> *The General Divisor Theorem: Exact Density Correction under Residue Conditioning* (Draft v3.3)  
+> Paper: [https://antiviolence.ai/gdt.pdf](https://antiviolence.ai/gdt.pdf)  
+> Local mirror: [`docs/gdt.pdf`](docs/gdt.pdf)  
+> Original challenge repository: [thinkthoughts/general-divisor-theorem](https://github.com/thinkthoughts/general-divisor-theorem)
+
+Zenodo archive: [10.5281/zenodo.23425590](https://doi.org/10.5281/zenodo.23425590) (Release v3.0 — Concept DOI: [10.5281/zenodo.23316068](https://doi.org/10.5281/zenodo.23316068))
+
+---
+
+## Kernel-verified milestone — October 2026
+
+The current `gdt-kernel-bridge` development extends the formalization through:
+
+- admissible / inadmissible dichotomy;
+- exact periodicity;
+- exact `φ(R)` count per period;
+- exact arbitrary-bound counting;
+- natural-density convergence;
+- the density-correction identity;
+- a unified top-level theorem.
+
+The current project state has:
+
+- a successful `lake build`;
+- no project `axiom` declarations in the Lean sources;
+- no Lean `sorry` terms in the Lean sources;
+- explicit `#print axioms` checks on the headline theorems.
+
+The audited headline theorems report only:
+
+```text
+[propext, Classical.choice, Quot.sound]
+```
+
+No `sorryAx` or project-defined mathematical axiom appears in those dependency reports.
+
+---
+
+## 1. Mathematical specification
+
+Let \(N,m \in \mathbb N^+\) and \(a \in \mathbb Z\). Define
+
+\[
+d=\mathrm{rad}(\gcd(m,N)),\qquad
+R=\frac{\mathrm{rad}(N)}{d},\qquad
+T_{\min}=mR.
+\]
+
+The predicate
+
+```lean
+S_indicator N m a n
+```
+
+means
+
+\[
+n\equiv a \pmod m
+\quad\text{and}\quad
+\gcd(n,N)=1.
+\]
+
+### Inadmissible branch
+
+If
+
+\[
+\gcd(|a|,d)>1,
+\]
+
+then there are no accepted integers in the prescribed residue class.
+
+### Admissible branch
+
+If
+
+\[
+\gcd(|a|,d)=1,
+\]
+
+the development proves periodicity with
+
+\[
+T_{\min}=mR=\mathrm{lcm}(m,\mathrm{rad}(N)),
+\]
+
+together with exactly
+
+\[
+\varphi(R)
+\]
+
+accepted values in one complete period.
+
+---
+
+## 2. Exact counting
+
+`DensityBridge.lean` proves the exact one-period result:
+
+```lean
+theorem gdt_count_per_period ...
+```
+
+with conclusion
+
+\[
+\mathrm{countOnePeriod}(N,m,a)=\varphi(R).
+\]
+
+`DensityCount.lean` lifts that result to arbitrary bounds. For every `q s : Nat`,
+
+\[
+C(qT_{\min}+s)=q\,\varphi(R)+C(s),
+\]
+
+where `C(X)` is `countBelow N m a X`.
+
+In particular,
+
+\[
+C(qT_{\min})=q\,\varphi(R).
+\]
+
+This is an exact counting identity, rather than an asymptotic approximation.
+
+---
+
+## 3. Natural density
+
+`DensityLimit.lean` uses the canonical decomposition
+
+\[
+X=\left\lfloor\frac{X}{T_{\min}}\right\rfloor T_{\min}
+  +(X\bmod T_{\min})
+\]
+
+together with the exact counting formula and a uniformly bounded remainder.
+
+The theorem
+
+```lean
+GeneralDivisorTheorem.density_limit
+```
+
+proves over `ℝ` that
+
+\[
+\frac{C(X)}{X}\longrightarrow
+\frac{\varphi(R)}{T_{\min}}
+=
+\frac{\varphi(R)}{mR}.
+\]
+
+---
+
+## 4. Density correction
+
+The naive independent-density expression is
+
+\[
+\frac{\varphi(N)}{Nm}.
+\]
+
+`CorrectionBridge.lean` proves the integer identity
+
+\[
+\varphi(R)\,N\,\varphi(d)
+=
+dR\,\varphi(N).
+\]
+
+Hence the exact admissible density differs from the naive expression by
+
+\[
+\frac{d}{\varphi(d)}.
+\]
+
+Equivalently,
+
+\[
+\frac{\varphi(R)}{mR}
+=
+\frac{d}{\varphi(d)}
+\frac{\varphi(N)}{Nm}.
+\]
+
+The correction depends on the shared prime support of `m` and `N`, rather than on the admissible residue `a`.
+
+---
+
+## 5. Unified theorem
+
+`GDTMain.lean` packages the current proof chain as
+
+```lean
+GeneralDivisorTheorem.general_divisor_theorem
+```
+
+for positive `N` and `m`.
+
+The theorem splits into the exact arithmetic dichotomy:
+
+### Inadmissible
+
+```text
+∀ n, ¬ S_indicator N m a n
+```
+
+or:
+
+### Admissible
+
+the conjunction of
+
+```text
+gcd(|a|,d) = 1
+periodicity by T_min
+exact φ(R) count per period
+exact q*T_min+s counting law
+natural-density limit φ(R)/T_min
+integer correction identity
+```
+
+---
+
+## 6. Lean module structure
+
+```text
+GeneralDivisorTheorem.lean
+    │
+    ├── foundational definitions
+    ├── admissibility / inadmissibility
+    ├── radical factorization
+    ├── period and lcm results
+    ├── exponent blindness
+    └── specialization theorems
+             │
+             ▼
+DensityBridge.lean
+    │
+    └── exact φ(R) count in one period
+             │
+             ▼
+DensityCount.lean
+    │
+    ├── translated-period counts
+    ├── q-period count
+    └── exact q*T+s count
+             │
+             ▼
+DensityLimit.lean
+    │
+    ├── quotient/remainder count
+    ├── bounded remainder
+    ├── real-valued error bound
+    └── natural-density convergence
+             │
+             ├──────────────┐
+             ▼              ▼
+CorrectionBridge.lean
+    │                       │
+    └── correction identity └── compatibility bridge
+             │
+             ▼
+GDTMain.lean
+    │
+    └── general_divisor_theorem
+```
+
+`VolkanBridge.lean` contains the repository's compatibility layer between the alternate representations used during development.
+
+---
+
+## 7. Specializations
+
+The core development also includes the GDT specializations for cases including:
+
+- `m ∣ N`;
+- unitary divisors;
+- squarefree / primorial cases.
+
+It also contains distinguishing examples designed to separate the general theorem from stronger naive admissibility conditions.
+
+---
+
+## 8. Building
+
+The repository is pinned to Lean 4.21.0 / Mathlib v4.21.0.
+
+Build the project with:
+
+```bash
+lake build
+```
+
+Individual modules may also be built directly, including:
+
+```bash
+lake build GeneralDivisorTheorem
+lake build DensityBridge
+lake build DensityCount
+lake build DensityLimit
+lake build CorrectionBridge
+lake build GDTMain
+lake build VolkanBridge
+```
+
+---
+
+## 9. Source audit
+
+A source-level audit can be run with:
+
+```bash
+grep -R -nE '\b(axiom|sorry)\b' \
+  --include='*.lean' \
+  --exclude-dir='.lake' .
+```
+
+At the current verified reading point there are no actual project `axiom` declarations or Lean `sorry` terms.
+
+Comments containing either word should not be confused with Lean declarations or proof holes.
+
+---
+
+## 10. Kernel dependency audit
+
+`Audit.lean` contains:
+
+```lean
+#print axioms GeneralDivisorTheorem.general_divisor_theorem
+#print axioms GeneralDivisorTheorem.density_limit
+#print axioms GeneralDivisorTheorem.gdt_correction_identity
+#print axioms GeneralDivisorTheorem.gdt_count_per_period
+#print axioms GeneralDivisorTheorem.coprime_m_R
+```
+
+Run:
+
+```bash
+lake env lean Audit.lean
+```
+
+The current result for each audited theorem is:
+
+```text
+[propext, Classical.choice, Quot.sound]
+```
+
+These are standard Lean foundations used through Mathlib. The report contains no `sorryAx` and no project-defined GDT axiom.
+
+---
+
+## 11. Computational checks
+
+The repository also contains executable arithmetic checks:
+
+```bash
+python scripts/verify_gdt.py
+python scripts/verify_bridge.py
+python scripts/werr_multilayer_sieve_synthesis.py
+```
+
+These provide independent computational checks and are complementary to, rather than substitutes for, the Lean kernel proofs.
+
+### 11.1. Cross-Corpus Applied Benchmark: 4-Pillar Multi-Layer Algebraic Sieve Synthesis
+
+See [`docs/WERR_MULTILAYER_ALGEBRAIC_SIEVE_SYNTHESIS.md`](docs/WERR_MULTILAYER_ALGEBRAIC_SIEVE_SYNTHESIS.md) and [`scripts/werr_multilayer_sieve_synthesis.py`](scripts/werr_multilayer_sieve_synthesis.py) for an executable computational number theory benchmark uniting four formally verified Lean 4 tracks across our open-science corpus:
+
+| Level | Research Pillar | Sieve Mechanism | Survivors ($10^7$ RSA-270 Window) | Cumulative Speedup |
+| :---: | :--- | :--- | :---: | :---: |
+| **L0** | *Baseline* | Parity Sieve ($\bmod\ 2$) | `5,000,000` | **$2.00\times$** |
+| **L1** | **Pillar I (`GDT v3.0`)** | Primorial $M_8$ Radical Contraction & Theorem 18 $O(1)$ Block Sieve | `1,710,234` | **$5.85\times$** |
+| **L2** | **Pillar II (`Niemeier 3A8`)** | $+ (\mathbb{Z}/9\mathbb{Z})^3 \to 27$ Isotropic Glue Code & $(\mathbb{Z}/9\mathbb{Z})^\times$ Unit Pairing | `855,117` | **$11.69\times$** |
+| **L3** | **Pillar III (`GAP-0190/0247`)** | $+ 11$-Modulus Orbit-Stabilizer QR Coset Sieve ($p \le 31$) | `760` | **$13,157.89\times$** |
+| **L4** | **Pillar III (`Super-Wheel`)** | $+ 14$-Modulus 64-Bit QR Super-Wheel ($\bmod\ 64, 27, 25, 7, 11..43$) | **`62`** | **$161,352.41\times$** |
+
+Coupled with **Pillar IV** ([`pCwOrM/integer-mult-bounds`](https://github.com/pCwOrM/integer-mult-bounds), `arXiv:2610.14263` — 64-bit word-packed $\mathbb{F}_2$ box-pruned nullspace Quadratic Sieve and Schönhage bipartite alternating carrier parity shifts) and `VolkanBridge` harmonic multiplier conditioning ($a^2 - 4kN = b^2$), the suite resolves **10/10 multi-regime semiprime benchmarks (40-bit to 257-bit)**.
+
+---
+
+## 12. Citation and attribution
+
+```bibtex
+@misc{dagli2026gdt_lean4,
+  author    = {Da\u{g}l\i, Volkan and Da\u{g}l\i, Zerrin and Da\u{g}l\i, Da\u{g}han},
+  title     = {Machine-Certified Lean 4 Formalization of the General Divisor Theorem: Unified Density, Arbitrary-Bound Counting, and Finite Error Bounds},
+  year      = {2026},
+  month     = {October},
+  publisher = {Zenodo},
+  version   = {3.0.0},
+  doi       = {10.5281/zenodo.23425590},
+  url       = {https://doi.org/10.5281/zenodo.23425590}
+}
+
+@misc{thinkthoughts2026gdt,
+  author       = {Dan Hawkley},
+  title        = {The General Divisor Theorem: Exact Density Correction under Residue Conditioning},
+  year         = {2026},
+  howpublished = {\url{https://antiviolence.ai/gdt.pdf}},
+  note         = {Draft v3.3}
+}
+```
+
+The mathematical GDT specification and original Lean challenge were developed by Dan Hawkley / `thinkthoughts`. This repository contains the subsequent Lean 4 implementation, collaborative bridge work, verification infrastructure, and the `gdt-kernel-bridge` development extending the formalization through exact counting, density, correction, and unified theorem packaging.
+
+For archived repository metadata and its author list, see the Zenodo record above.
+
+---
+
+## 13. Acknowledgments & Computing Infrastructure
+
+Dedicated bare-metal computing clusters, proof verification environments, and enterprise development resources were provided by **Bekirhan Dağlı** (Managing Partner) and **ITouch Systems Research & Development**.
+
+---
+
+## 14. Companion Open-Science Formal Architecture
+
+This work is part of the unified open-science formal mathematics and theoretical computer science initiative developed by ITouch Systems Research Labs:
+* **24D Niemeier Lattice $A_8^3$, K3 Hodge Duality & Umbral Moonshine in Lean 4:** [Zenodo: 10.5281/zenodo.23324066](https://doi.org/10.5281/zenodo.23324066) (Record: [`23324067`](https://zenodo.org/records/23324067)) • [GitHub: `pCwOrM/niemeier-a8-umbral-moonshine`](https://github.com/pCwOrM/niemeier-a8-umbral-moonshine)
+* **GAP to Lean 4 Verified Port (Phase 1 & 2 — 35 Theorems, `GAP-0190`/`GAP-0247`):** [arXiv: 2609.38492](https://arxiv.org/abs/2609.38492) • [Zenodo: 10.5281/zenodo.23045504](https://doi.org/10.5281/zenodo.23045504) • [GitHub: `pCwOrM/gap-lean4-port`](https://github.com/pCwOrM/gap-lean4-port)
+* **Schönhage Tensor Carrier Compression (World Record):** [Zenodo: 10.5281/zenodo.23268580](https://doi.org/10.5281/zenodo.23268580) • [GitHub: `pCwOrM/integer-mult-bounds`](https://github.com/pCwOrM/integer-mult-bounds) • [CrocSwap PR #226 (`incorporated`)](https://github.com/CrocSwap/integer-mult-bounds/pull/226) • [Official Contributors Credit (`@pCwOrM`)](https://github.com/CrocSwap/integer-mult-bounds/blob/50d768818f579d4e165b4c257c6ee25bca300802/CONTRIBUTORS.md) • [Maintainer Audit (`50d76881`)](https://github.com/CrocSwap/integer-mult-bounds/blob/50d768818f579d4e165b4c257c6ee25bca300802/docs/research/community-reconciliation-next100-review.md)
+* **Werr Multi-Layer Algebraic Sieve & Vélu Isogeny Engine (High-Rank Elliptic Curves):** [NSF ICARM Leaderboard (user/114)](https://elliptic-rank.icarm.cloud/user/114) • [GitHub: pCwOrM/werr-elliptic-sieve](https://github.com/pCwOrM/werr-elliptic-sieve) (230 certified curves, 100% conductor factorization, 30 #1 records)
+* **WERR Core Monorepo:** [Zenodo: 10.5281/zenodo.22774934](https://doi.org/10.5281/zenodo.22774934) • [GitHub: `pCwOrM/mandelbrot-fractal-neural-synthesis`](https://github.com/pCwOrM/mandelbrot-fractal-neural-synthesis)
+* **WERRobotics (Arduino & Edge AI Kernel v0.5.1):** [GitHub: `pCwOrM/WERRobotics`](https://github.com/pCwOrM/WERRobotics)
+* **WerrSoma Whole-Brain Drosophila Connectome (158K Neurons):** [Zenodo: 10.5281/zenodo.23072929](https://doi.org/10.5281/zenodo.23072929) • [GitHub: `Lexovian/WerrSoma`](https://github.com/Lexovian/WerrSoma)
+* **WerreduR Procedural Fractal Pedagogy (v4.0):** [Zenodo: 10.5281/zenodo.23128224](https://doi.org/10.5281/zenodo.23128224) • [GitHub: `jesmaat/WerreduR`](https://github.com/jesmaat/WerreduR)
+
+---
+
+## 15. License
+
+Apache-2.0.
+
