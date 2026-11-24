@@ -431,7 +431,7 @@ For archived repository metadata and its author list, see the Zenodo record abov
 
 ## 13. Acknowledgments & Computing Infrastructure
 
-Dedicated bare-metal computing clusters, proof verification environments, and enterprise development resources were provided by **Bekirhan Dağlı** (Managing Partner) and **ITouch Systems Research & Development**.
+Dedicated bare-metal computing clusters, proof verification environments, and enterprise development resources were provided by **Bekirhan Dagli** (Managing Partner) and **ITouch Systems Research & Development**.
 
 ---
 
