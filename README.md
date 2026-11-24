@@ -25,6 +25,23 @@ The mathematical specification originates with **Dan Hawkley / thinkthoughts**
 
 Zenodo archive: [10.5281/zenodo.23425590](https://doi.org/10.5281/zenodo.23425590) (Release v3.0 — Concept DOI: [10.5281/zenodo.23316068](https://doi.org/10.5281/zenodo.23316068))
 
+<p align="center">
+  <img src="assets/demo.gif" alt="General Divisor Theorem Lean 4 Build Demo" width="820" />
+</p>
+
+## ⚡ 30-Second Quick Start
+
+```bash
+git clone https://github.com/pCwOrM/general-divisor-theorem.git && cd general-divisor-theorem
+lake build && lake env lean Audit.lean
+```
+
+**Observed Output:**
+```text
+Build completed successfully.
+'general_divisor_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
 ---
 
 ## Kernel-verified milestone — October 2026
